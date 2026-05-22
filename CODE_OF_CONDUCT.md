@@ -18,6 +18,6 @@ Shiveron is a small open-source project. Everyone interacting here, whether thro
 
 ## Enforcement
 
-If someone is being disrespectful, I'll give a warning first. Repeated or severe behavior will result in being blocked from the repository.
+If someone is being disrespectful, we'll give a warning first. Repeated or severe behavior will result in being blocked from the repository.
 
-To report an issue, reach out privately via [Ko-Fi](https://ko-fi.com/serkyo).
+To report an issue, reach out privately via [Patreon](https://patreon.com/Cryoforge_Nexus).

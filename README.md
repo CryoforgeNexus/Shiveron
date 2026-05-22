@@ -2,14 +2,14 @@
   <img src="./shiveron_icon.png" height="300" alt="Shiveron Icon">
   <h1>Shiveron</h1>
   <p>A multipurpose and modular Discord bot</p>
-  <img alt="GitHub package.json version" src="https://img.shields.io/github/package-json/v/Serkyo/Shiveron?style=flat">
-  <img alt="GitHub contributors" src="https://img.shields.io/github/contributors/Serkyo/Shiveron?style=flat&color=green">
-  <img alt="GitHub forks" src="https://img.shields.io/github/forks/Serkyo/Shiveron?style=flat&color=aqua">
-  <img alt="GitHub stars" src="https://img.shields.io/github/stars/Serkyo/Shiveron?style=flat&color=yellow">
-  <img alt="GitHub issues" src="https://img.shields.io/github/issues/Serkyo/Shiveron?style=flat&color=red">
-  <img alt="GitHub license" src="https://img.shields.io/github/license/Serkyo/Shiveron?style=flat&color=silver">
+  <img alt="GitHub package.json version" src="https://img.shields.io/github/package-json/v/Cryoforge-Nexus/shiveron?style=flat">
+  <img alt="GitHub contributors" src="https://img.shields.io/github/contributors/Cryoforge-Nexus/shiveron?style=flat&color=green">
+  <img alt="GitHub forks" src="https://img.shields.io/github/forks/Cryoforge-Nexus/shiveron?style=flat&color=aqua">
+  <img alt="GitHub stars" src="https://img.shields.io/github/stars/Cryoforge-Nexus/shiveron?style=flat&color=yellow">
+  <img alt="GitHub issues" src="https://img.shields.io/github/issues/Cryoforge-Nexus/shiveron?style=flat&color=red">
+  <img alt="GitHub license" src="https://img.shields.io/github/license/Cryoforge-Nexus/shiveron?style=flat&color=silver">
   <br>
-  <a href="https://ko-fi.com/serkyo"><img alt="Ko-Fi donations" src="https://ko-fi.com/img/githubbutton_sm.svg"></a>
+  <a href="https://patreon.com/Cryoforge_Nexus"><img alt="Patreon" src="https://img.shields.io/badge/Patreon-F96854?logo=patreon&logoColor=white"></a>
 </div>
 
 ## Features
@@ -25,7 +25,7 @@
 ## Public Hosted Version
 
 You can invite the public version of Shiveron using [this link](https://discord.com/oauth2/authorize?client_id=1305623177753526282&permissions=8&integration_type=0&scope=applications.commands+bot).  
-The bot is hosted by me, and I try to ensure it stays up 24/7.
+The bot is hosted by Cryoforge Nexus, and we try to ensure it stays up 24/7.
 
 ## Requirements
 
@@ -51,7 +51,7 @@ To invite your bot to a server :
 
 Once your bot is ready, follow these steps :
 
-- Download the [latest release](https://github.com/Serkyo/Shiveron/releases)
+- Download the [latest release](https://github.com/Cryoforge-Nexus/shiveron/releases)
 - Extract the files from the downloaded archive
 - The following step differs depending on your os :
     - **Linux users :** Run the file `linux_setup_and_run.sh` **in your terminal** by typing the following after navigating to the directory where you extracted the bot files :
@@ -59,11 +59,15 @@ Once your bot is ready, follow these steps :
         chmod +x linux_setup_and_run.sh
         ./linux_setup_and_run.sh
         ```
-    - **Windows users :** I couldn't make a working script to run the bot, so you'll have to do it manually. Don't worry, it's not that deep. - First, simply fill in the required fields of the file `.env.example`, and then rename it to `.env`. - Then you need to also fill in the files in the folder `secrets_example` with the content that corresponds to their name, and rename that folder to `secrets`. - Finally, you simply have to do the following commands to start and stop the bot :
-      `cmd
-docker compose up -d --build
-docker compose stop
-`
+    - **Windows users :** we couldn't make a working script to run the bot, so you'll have to do it manually. Don't worry, it's not that deep. 
+      - First, simply fill in the required fields of the file `.env.example`, and then rename it to `.env`. 
+      - Then you need to also fill in the files in the folder `secrets_example` with the content that corresponds to their name, and rename that folder to `secrets`. 
+      - Finally, you simply have to do the following commands to start and stop the bot :
+      ```cmd
+        docker compose up -d --build
+        docker compose stop
+      ```
+
         > [!NOTE]
         > The first startup may take a few minutes, as the translation language models need to be downloaded before the bot can start. You can monitor the progress with `docker compose logs`.
 
@@ -82,7 +86,7 @@ Now, you can start coding ! Here's what you can change easily :
 
 ## Contributing
 
-Feel free to [fork](https://github.com/Serkyo/Shiveron/fork) this repository and open a pull request against the `dev` branch.
+Feel free to [fork](https://github.com/Cryoforge-Nexus/shiveron/fork) this repository and open a pull request against the `dev` branch.
 Please read [CONTRIBUTING.md](CONTRIBUTING.md) before submitting, it covers the branch strategy, code style, and what's expected from a pull request.
-If you encounter any issues, please report them [here](https://github.com/Serkyo/Shiveron/issues).
-If you enjoy this project, you can support me on [Ko-Fi](https://ko-fi.com/serkyo) !
+If you encounter any issues, please report them [here](https://github.com/Cryoforge-Nexus/shiveron/issues).
+If you enjoy this project, you can support us on [Patreon](https://patreon.com/Cryoforge_Nexus) !

@@ -13,7 +13,7 @@ Always branch off `dev`, and target `dev` in your pull requests. Never open a PR
 
 ## Getting Started
 
-1. [Fork](https://github.com/Serkyo/Shiveron/fork) the repository
+1. [Fork](https://github.com/Cryoforge-Nexus/shiveron/fork) the repository
 2. Clone your fork and install dependencies :
     ```bash
     git clone https://github.com/your-username/Shiveron.git
@@ -36,10 +36,18 @@ The project is designed to make this easy :
 
 ## Code Style
 
-Shiveron uses ESLint to enforce code style. Before submitting, make sure your code passes the linter :
+Shiveron uses ESLint and Prettier. CI runs the checks on every pull request and a PR cannot be merged until both pass :
 
 ```bash
-npx eslint .
+npm run lint
+npm run format:check
+```
+
+CI only reports failures, it does not fix anything. If a check fails, run the fixes yourself :
+
+```bash
+npm run lint:fix
+npm run format
 ```
 
 Keep your changes focused. One feature or fix per pull request keeps things clean and easy to review.
@@ -50,8 +58,8 @@ Vibe-coded pull requests will not be accepted. If you're submitting code, you sh
 
 ## Reporting Issues
 
-Found a bug ? Please open an issue [here](https://github.com/Serkyo/Shiveron/issues) with as much detail as possible, what happened, what you expected, and how to reproduce it.
+Found a bug ? Please open an issue [here](https://github.com/Cryoforge-Nexus/shiveron/issues) with as much detail as possible, what happened, what you expected, and how to reproduce it.
 
 ## Support
 
-If you enjoy the project, you can support me on [Ko-Fi](https://ko-fi.com/serkyo) !
+If you enjoy the project, you can support us on [Patreon](https://patreon.com/Cryoforge_Nexus) !
