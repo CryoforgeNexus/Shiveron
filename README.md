@@ -68,8 +68,8 @@ Once your bot is ready, follow these steps :
         docker compose stop
       ```
 
-        > [!NOTE]
-        > The first startup may take a few minutes, as the translation language models need to be downloaded before the bot can start. You can monitor the progress with `docker compose logs`.
+> [!NOTE]
+> The first startup may take a few minutes, as the translation language models need to be downloaded before the bot can start. You can monitor the progress with `docker compose logs`.
 
 ## Adding Features
 
