@@ -25,7 +25,7 @@
 	"type": "module",
 	"dependencies": {
 		"async-lock": "^1.4.1",
-		"discord.js": "^14.25.1",
+		"discord.js": "^14.27.0",
 		"pg": "^8.21.0",
 		"sequelize": "^6.37.7"
 	},
