@@ -1,7 +1,37 @@
+# Node dependencies and build output
 node_modules/
 dist/
-.env
-secrets/
-.vscode/
+*.tsbuildinfo
+
+# Runtime state produced by the bot and its Docker stack
 logs/
 db_data/
+
+# Secrets — the tracked templates are `.env.example` and `secrets_example/`
+.env
+secrets/
+
+# Serena MCP local tooling state (per-machine project config and cache)
+.serena/
+
+# tokensave MCP local tooling state (per-machine code-graph database and config)
+.tokensave/
+
+# headroom MCP local tooling state (per-machine context-compression marker)
+.claude/.headroom_wrap_marker.json
+
+# Machine-local files
+*.local.*
+tmp/
+
+# Editors
+.vscode/
+#  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
+#  be found at https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
+#  and can be added to the global gitignore or merged into this file. For a more nuclear
+#  option (not recommended) you can uncomment the following to ignore the entire idea folder.
+#.idea/
+
+# OS junk
+.DS_Store
+Thumbs.db
