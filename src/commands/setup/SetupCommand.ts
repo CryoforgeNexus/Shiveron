@@ -24,7 +24,8 @@ import {
 } from 'discord.js';
 import { BaseCommand } from '../../core/BaseCommand.js';
 import { ShiveronClient } from '../../core/ShiveronClient.js';
-import { awaitAuthorizedComponentInteraction } from '../../utils/discord/interactions.js';
+import { GuildSettings } from '../../models/GuildSettings.js';
+import { awaitAuthorizedComponentInteraction, awaitAuthorizedMessage } from '../../utils/discord/interactions.js';
 import { INTERACTION_TIMEOUT_MS } from '../../utils/constants.js';
 
 export default class SetupCommand extends BaseCommand {
@@ -797,46 +798,44 @@ export default class SetupCommand extends BaseCommand {
 						content: t(messagePromptKey, { action: t('command.setup.button.' + action) }),
 					});
 
-					const collectedMessages = await channel.awaitMessages({
-						time: INTERACTION_TIMEOUT_MS,
-						max: 1,
-						filter: (message) => commandCaller.id == message.author.id,
-					});
+					const newMessage = await awaitAuthorizedMessage(channel, commandCaller.id);
 
-					const newMessage = collectedMessages.first();
-					let updatedSettings = null;
-
-					if (collectedMessages.size == 0) {
+					if (!newMessage) {
 						newMessageQuestion.reply({ content: t('misc.interaction_expired', { seconds: 60 }) });
-					} else if (action == 'join') {
+						return;
+					}
+
+					let updatedSettings: GuildSettings | null;
+
+					if (action == 'join') {
 						updatedSettings = await client.guildSettingsService.updateGuildSettings({
 							guildId: interaction.guildId!,
 							joinChannelId: channelSelected.values[0]!,
-							joinMessage: newMessage!.content,
+							joinMessage: newMessage.content,
 						});
 					} else if (action == 'leave') {
 						updatedSettings = await client.guildSettingsService.updateGuildSettings({
 							guildId: interaction.guildId!,
 							leaveChannelId: channelSelected.values[0]!,
-							leaveMessage: newMessage!.content,
+							leaveMessage: newMessage.content,
 						});
 					} else {
 						updatedSettings = await client.guildSettingsService.updateGuildSettings({
 							guildId: interaction.guildId!,
 							banChannelId: channelSelected.values[0]!,
-							banMessage: newMessage!.content,
+							banMessage: newMessage.content,
 						});
 					}
 
 					if (updatedSettings) {
-						newMessage!.reply({
+						newMessage.reply({
 							content: t('command.setup.result.success_enable_message', {
 								action: t('command.setup.button.' + action),
-								message: newMessage!.content,
+								message: newMessage.content,
 							}),
 						});
 					} else {
-						newMessage!.reply({
+						newMessage.reply({
 							content: t('command.setup.result.error_generic', {
 								action: t('command.setup.feature.departure_message'),
 							}),
@@ -924,18 +923,12 @@ export default class SetupCommand extends BaseCommand {
 				content: t('command.setup.prompt.auto_ban_count'),
 			});
 
-			const collectedMessages = await channel.awaitMessages({
-				time: INTERACTION_TIMEOUT_MS,
-				max: 1,
-				filter: (message) => commandCaller.id == message.author.id,
-			});
+			const answer = await awaitAuthorizedMessage(channel, commandCaller.id);
 
-			const newNbWarningsStr = collectedMessages.first();
-
-			if (collectedMessages.size == 0) {
+			if (!answer) {
 				await newNbWarningsQuestion.reply({ content: t('misc.interaction_expired', { seconds: 60 }) });
-			} else if (!isNaN(Number(newNbWarningsStr))) {
-				const newNbWarnings = parseFloat(newNbWarningsStr!.content);
+			} else if (!isNaN(Number(answer.content))) {
+				const newNbWarnings = parseFloat(answer.content);
 
 				const updatedSettings = await client.guildSettingsService.updateGuildSettings({
 					guildId: interaction.guildId!,
@@ -943,11 +936,11 @@ export default class SetupCommand extends BaseCommand {
 				});
 
 				if (updatedSettings) {
-					await newNbWarningsStr!.reply({
+					await answer.reply({
 						content: t('command.setup.result.success_enable_max_warnings', { amount: newNbWarnings }),
 					});
 				} else {
-					await newNbWarningsStr!.reply({
+					await answer.reply({
 						content: t('command.setup.result.error_generic', {
 							action: t('command.setup.button.max_warnings'),
 						}),
@@ -1074,32 +1067,26 @@ export default class SetupCommand extends BaseCommand {
 					content: t('command.setup.prompt.enter_message_without_member_count'),
 				});
 
-				const collectedMessages = await channel.awaitMessages({
-					time: INTERACTION_TIMEOUT_MS,
-					max: 1,
-					filter: (message) => commandCaller.id == message.author.id,
-				});
+				const newMessage = await awaitAuthorizedMessage(channel, commandCaller.id);
 
-				const newMessage = collectedMessages.first();
-
-				if (collectedMessages.size == 0) {
+				if (!newMessage) {
 					newMessageQuestion.reply({ content: t('misc.interaction_expired', { seconds: 60 }) });
 				} else {
 					const updatedSettings = await client.guildSettingsService.updateGuildSettings({
 						guildId: interaction.guildId!,
 						boostChannelId: channelSelected.values[0]!,
-						boostMessage: newMessage!.content,
+						boostMessage: newMessage.content,
 					});
 
 					if (updatedSettings) {
-						newMessage!.reply({
+						newMessage.reply({
 							content: t('command.setup.result.success_enable_message', {
 								action: 'boost',
-								message: newMessage!.content,
+								message: newMessage.content,
 							}),
 						});
 					} else {
-						newMessage!.reply({
+						newMessage.reply({
 							content: t('command.setup.result.error_generic', {
 								feature: t('command.setup.feature.boost_message'),
 							}),

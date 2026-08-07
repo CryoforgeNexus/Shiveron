@@ -1,4 +1,5 @@
 import {
+	type GuildTextBasedChannel,
 	Message,
 	type MessageComponentType,
 	MessageComponentInteraction,
@@ -42,4 +43,23 @@ export async function awaitAuthorizedComponentInteraction(
 	message.edit({ components: [] });
 
 	return interaction;
+}
+
+/**
+ * Waits for a single message sent in a channel by a specific user.
+ * @param channel - The channel to listen on.
+ * @param authorId - The Discord user ID of the only person whose message is accepted.
+ * @returns The collected message, or `null` if the 60-second timeout expires without one.
+ */
+export async function awaitAuthorizedMessage(
+	channel: GuildTextBasedChannel,
+	authorId: string,
+): Promise<Message | null> {
+	const collected = await channel.awaitMessages({
+		time: INTERACTION_TIMEOUT_MS,
+		max: 1,
+		filter: (message) => authorId == message.author.id,
+	});
+
+	return collected.first() ?? null;
 }
