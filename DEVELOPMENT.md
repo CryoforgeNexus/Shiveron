@@ -18,10 +18,10 @@ Shiveron is a single TypeScript package targeting Node.js, built with `tsc` and 
 - `src/bot.ts`: entry point. Constructs a `ShiveronClient` and starts it. Deliberately trivial.
 - `src/core/`: the framework layer. `ShiveronClient` (the discord.js client, plus command/event loading and slash-command deployment), `BaseCommand` and `BaseEvent` (the contracts every feature implements), `Database` (Sequelize connection and model init), `I18N` (locale loading and key resolution), `ShiveronLogger` (console and file logging).
 - `src/commands/`: one file per slash command, grouped into subfolders by category (`moderation/`, `setup/`, `utility/`). The subfolder name is organizational only; the loader walks every subfolder.
-- `src/events/`: one file per Discord gateway event handler.
+- `src/events/`: one file per Discord gateway event handler. A handler that outgrows a single file gets a subfolder named after its feature, holding the modules it delegates to — `voice/` for the temporary voice channels. The event loader reads `dist/events/` without recursing, so these subfolders are never mistaken for handlers.
 - `src/services/`: all database and external-API access. Commands and events call services; they never touch models or `fetch` directly.
 - `src/models/`: Sequelize model definitions, one per table.
-- `src/utils/`: pure helpers with no Discord or database state. `discord/` holds helpers that do take discord.js types but hold no state of their own.
+- `src/utils/`: pure helpers with no Discord or database state. `discord/` holds helpers that do take discord.js types but hold no state of their own. A helper with exactly one caller does not belong here; keep it next to the code that uses it until a second caller appears.
 - `src/locales/`: one JSON file per supported language, copied into `dist/locales/` by the build.
 - `assets/`: binary project assets (icon, artwork). Tracked with Git LFS.
 - `docker/`: `Dockerfile` and container entrypoint.

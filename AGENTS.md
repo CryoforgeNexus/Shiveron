@@ -47,10 +47,10 @@ If an implementation conflicts with these rules, **prefer preserving the archite
 - `src/bot.ts`: entry point, deliberately trivial.
 - `src/core/`: `ShiveronClient`, `BaseCommand`, `BaseEvent`, `Database`, `I18N`, `ShiveronLogger`.
 - `src/commands/<category>/`: one slash command per file, default-exported class extending `BaseCommand`.
-- `src/events/`: one gateway handler per file, default-exported class extending `BaseEvent`.
+- `src/events/`: one gateway handler per file, default-exported class extending `BaseEvent`. Oversized handlers delegate to a feature subfolder (`src/events/voice/`), which the loader ignores.
 - `src/services/`: database and external-API access.
 - `src/models/`: Sequelize models, one per table.
-- `src/utils/`: pure helpers. `src/utils/discord/`: stateless discord.js helpers.
+- `src/utils/`: pure helpers. `src/utils/discord/`: stateless discord.js helpers, and only for things with more than one caller.
 - `src/locales/`: one JSON file per language, copied to `dist/locales/` at build time.
 - `assets/`: binary assets, tracked with Git LFS.
 - `docker/`, `docker-compose.yml`: the deployment stack.

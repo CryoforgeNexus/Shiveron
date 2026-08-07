@@ -5,10 +5,16 @@ All notable changes to Shiveron are documented here. Versions follow [Semantic V
 ## [Unreleased]
 
 ### Changed
+- `VoiceStateUpdateEvent` split into `src/events/voice/`: the handler now only routes, with channel lifecycle, the owner's control panel, the control message, permission building, and collector tracking each in their own module
+- `VoiceCollectorManager` renamed to `CollectorManager` and moved alongside the rest of the voice code; the client property is now `client.collectorManager`
 - Development moved to Cryoforge Nexus' Forgejo instance at `git.cryoforgenexus.com/Shiveron/shiveron`. GitHub is now a read-only mirror; issues and pull requests go to Forgejo
 - Binary assets moved to `assets/` and are tracked with Git LFS
 - Documentation split by altitude: `README.md` for running the bot, `CONTRIBUTING.md` for the process, `DEVELOPMENT.md` for the engineering manual
 - Corrected the declared license in `package.json`, which said ISC while `LICENSE` has always been MIT
+- Issue and pull request numbers in commits predating the migration refer to the archived GitHub tracker. History was not rewritten; `CONTRIBUTING.md` explains how to resolve them
+
+### Fixed
+- Setup panel throwing instead of stopping cleanly when the join, leave or ban message prompt timed out
 
 ## [v1.2.0] — Message translation
 
