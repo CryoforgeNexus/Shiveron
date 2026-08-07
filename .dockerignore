@@ -1,0 +1,29 @@
+# Secrets and local runtime state
+.env
+secrets/
+logs/
+db_data/
+
+# Version control and tooling metadata
+.git
+.gitattributes
+.gitignore
+.forgejo/
+.claude/
+.serena/
+.tokensave/
+
+# Build output, reinstalled inside the image
+node_modules/
+dist/
+
+# Repository documentation and project files not needed at runtime
+assets/
+docker-compose.yml
+docker/Dockerfile
+eslint.config.ts
+.prettierignore
+.prettierrc.json
+LICENSE
+linux_setup_and_run.sh
+*.md
