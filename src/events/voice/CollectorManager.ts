@@ -1,7 +1,7 @@
 import type { InteractionCollector, MessageCollector, StringSelectMenuInteraction } from 'discord.js';
 
 /** Tracks active message and interaction collectors keyed by voice channel ID, preventing duplicate collectors. */
-export class VoiceCollectorManager {
+export class CollectorManager {
 	private messageCollector: Map<string, MessageCollector>;
 	private channelControlsCollector: Map<string, InteractionCollector<StringSelectMenuInteraction>>;
 

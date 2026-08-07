@@ -2,6 +2,12 @@ import fs from 'fs';
 import path from 'path';
 import { interpolate } from '../utils/formatters.js';
 
+/**
+ * A locale-bound translation function. Callers that already know which guild they are serving
+ * close over the locale once and pass this around instead of threading the locale everywhere.
+ */
+export type Translator = (path: string, vars?: Record<string, any>) => string;
+
 /** Handles loading and resolving localization strings from JSON locale files. */
 export class I18N {
 	private translations: Map<string, any>;

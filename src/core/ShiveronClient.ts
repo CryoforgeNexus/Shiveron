@@ -11,7 +11,7 @@ import { VoiceService } from '../services/VoiceService.js';
 import { InfractionService } from '../services/InfractionService.js';
 import { getConfig } from '../utils/config.js';
 import { INFRACTION_EXPIRY_CHECK_INTERVAL_MS } from '../utils/constants.js';
-import { VoiceCollectorManager } from '../utils/discord/VoiceCollectorManager.js';
+import { CollectorManager } from '../events/voice/CollectorManager.js';
 import { I18N } from './I18N.js';
 import { LibreTranslateService } from '../services/LibreTranslateService.js';
 
@@ -20,7 +20,7 @@ export class ShiveronClient extends Client {
 	public commands: Collection<string, BaseCommand>;
 	public logger: ShiveronLogger;
 	private db: Database;
-	public voiceCollectorManager: VoiceCollectorManager;
+	public collectorManager: CollectorManager;
 	public guildSettingsService: GuildSettingsService;
 	public infractionService: InfractionService;
 	public voiceService: VoiceService;
@@ -43,7 +43,7 @@ export class ShiveronClient extends Client {
 		this.commands = new Collection();
 		this.logger = new ShiveronLogger();
 		this.db = new Database(this.logger);
-		this.voiceCollectorManager = new VoiceCollectorManager();
+		this.collectorManager = new CollectorManager();
 		this.guildSettingsService = new GuildSettingsService(this.logger);
 		this.infractionService = new InfractionService(this.logger);
 		this.voiceService = new VoiceService(this.logger);
