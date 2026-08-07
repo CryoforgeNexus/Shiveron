@@ -105,6 +105,18 @@ Open an issue [on Forgejo](https://git.cryoforgenexus.com/Shiveron/shiveron/issu
 
 For anything security-related, do **not** open a public issue. Follow [SECURITY.md](SECURITY.md) instead.
 
+### Issue references in old commits
+
+Commits made before the move to Forgejo reference issues and pull requests by number — `fix #4`, `(#21)`, and so on. Those numbers belong to the old GitHub tracker, not to Forgejo's, so Forgejo renders them as links that go nowhere. History has not been rewritten to correct them; the commit hashes and the release tags are published and are worth more than tidy links.
+
+To look one up, substitute the number into the archived tracker:
+
+```
+https://github.com/CryoforgeNexus/Shiveron/issues/<number>
+```
+
+Numbering on Forgejo starts fresh, so a low number in a recent commit means Forgejo and a low number in a commit older than the migration means GitHub. Check the commit date if you are unsure.
+
 ## Conduct
 
 Everyone taking part in this project is expected to follow the [Code of Conduct](CODE_OF_CONDUCT.md).
