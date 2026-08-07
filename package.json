@@ -11,17 +11,23 @@
 		"format": "prettier --write .",
 		"format:check": "prettier --check ."
 	},
-	"keywords": [],
+	"keywords": [
+		"discord",
+		"discord-bot",
+		"discordjs",
+		"moderation",
+		"typescript"
+	],
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/Serkyo/Shiveron.git"
+		"url": "git+https://git.cryoforgenexus.com/Shiveron/shiveron.git"
 	},
-	"author": "Serkyo",
-	"license": "ISC",
+	"author": "Cryoforge Nexus",
+	"license": "MIT",
 	"bugs": {
-		"url": "https://github.com/Serkyo/Shiveron/issues"
+		"url": "https://git.cryoforgenexus.com/Shiveron/shiveron/issues"
 	},
-	"homepage": "https://github.com/Serkyo/Shiveron#readme",
+	"homepage": "https://git.cryoforgenexus.com/Shiveron/shiveron#readme",
 	"type": "module",
 	"dependencies": {
 		"async-lock": "^1.4.1",
