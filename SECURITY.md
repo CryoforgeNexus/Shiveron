@@ -36,4 +36,4 @@ If you run your own instance, these are yours to get right:
 - The bot token and the database password are read from Docker secrets, not from `.env`. Keep the `secrets/` directory out of version control; it is already gitignored.
 - The bundled LibreTranslate container runs with no API key and is reachable only on the internal Compose network. Do not publish its port.
 - The PostgreSQL container is likewise unpublished. Keep it that way.
-- `logs/` can contain guild IDs, user IDs, and message content passed through translation. Treat it as user data: it is subject to the same handling as anything else your users entrust to you.
+- Container logs can contain guild IDs, user IDs, and message content passed through translation. Treat them as user data: they are subject to the same handling as anything else your users entrust to you. The stack caps them at five 10 MB files per service through the `logging` block in `docker-compose.yml`; if you ship them to an aggregator instead, the retention decision moves with them.

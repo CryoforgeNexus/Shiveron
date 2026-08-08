@@ -98,10 +98,10 @@ If an implementation conflicts with these rules, **prefer preserving the archite
 - Command handlers receive `t`, already bound to the guild's locale. Use it; do not call `I18N` directly from a command.
 
 **Logging & Error Handling**
-- `ShiveronLogger` writes to console and to `logs/`, with `debug` split into its own file.
+- `ShiveronLogger` writes to stdout and stderr only. Rotation and retention are the container runtime's job, configured in `docker-compose.yml`. Do not add a file sink.
 - Levels: `info` for lifecycle, `warn` for recoverable or skipped, `error` for a failed operation, `debug` for per-item detail.
 - Catch at the boundary where you can still act. A command that fails must reply to the user **and** log; a swallowed error leaves the interaction hanging until Discord times it out.
-- Never log a token, password, or raw secret. `logs/` is user data.
+- Never log a token, password, or raw secret. Container logs are user data.
 
 **Testing Expectations**
 - There is **no automated test suite yet**. Do not claim a change is tested on the basis of a successful build.

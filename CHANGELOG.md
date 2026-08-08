@@ -15,6 +15,7 @@ All notable changes to Shiveron are documented here. Versions follow [Semantic V
 - Auto-translation passes the already-detected source language to LibreTranslate instead of making it detect the language a second time
 - Auto-translation ignores messages shorter than 12 characters, up from 4; detection on a handful of characters was guesswork the confidence gate rejected anyway
 - LibreTranslate has a healthcheck and the bot waits on it through `depends_on`, replacing the polling loop in the container entrypoint
+- Logging goes to stdout and stderr only. The `logs/` directory, its bind mount and the container entrypoint script are gone, and `docker-compose.yml` caps each service at five 10 MB files. An existing `logs/` directory can be deleted after upgrading
 - Bot presence now points at Cryoforge Nexus
 - `VoiceStateUpdateEvent` split into `src/events/voice/`: the handler now only routes, with channel lifecycle, the owner's control panel, the control message, permission building, and collector tracking each in their own module
 - `VoiceCollectorManager` renamed to `CollectorManager` and moved alongside the rest of the voice code; the client property is now `client.collectorManager`
@@ -25,7 +26,6 @@ All notable changes to Shiveron are documented here. Versions follow [Semantic V
 - Issue and pull request numbers in commits predating the migration refer to the archived GitHub tracker. History was not rewritten; `CONTRIBUTING.md` explains how to resolve them
 
 ### Fixed
-- Bot failing to write its log files when `logs/` was created by Docker as root, which happened on any host where the directory did not already exist
 - Auto-translation reply not being awaited, so a failed reply surfaced as an unhandled rejection instead of being logged
 - Setup panel throwing instead of stopping cleanly when the join, leave or ban message prompt timed out
 

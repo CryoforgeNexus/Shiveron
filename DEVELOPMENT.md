@@ -24,7 +24,7 @@ Shiveron is a single TypeScript package targeting Node.js, built with `tsc` and 
 - `src/utils/`: pure helpers with no Discord or database state. `discord/` holds helpers that do take discord.js types but hold no state of their own. A helper with exactly one caller does not belong here; keep it next to the code that uses it until a second caller appears.
 - `src/locales/`: one JSON file per supported language, copied into `dist/locales/` by the build.
 - `assets/`: binary project assets (icon, artwork). Tracked with Git LFS.
-- `docker/`: `Dockerfile` and container entrypoint.
+- `docker/`: the `Dockerfile`.
 - `secrets_example/`: templates for the Docker secret files. Copy to `secrets/`, which is gitignored.
 
 ## Layering rules
@@ -96,10 +96,10 @@ PostgreSQL through Sequelize. `Database.connect()` authenticates, then runs `syn
 
 ## Logging and error handling
 
-- Use `client.logger` (`ShiveronLogger`), never `console.log`. It writes timestamped lines to both the console and `logs/`, splitting `debug` output into its own file.
+- Use `client.logger` (`ShiveronLogger`), never `console.log`. It writes timestamped lines to stdout and stderr, and nothing else. Collection, rotation and retention belong to the container runtime; `docker-compose.yml` caps each service at five 10 MB files. Read them with `docker compose logs -f`.
 - Levels: `info` for lifecycle events, `warn` for a recoverable problem or a skipped item, `error` for a failed operation, `debug` for per-item detail that would be noise in normal operation.
 - Catch at the boundary where you can still do something useful. A command that fails should reply to the user *and* log; swallowing the error leaves the interaction hanging until Discord times it out.
-- Never log a token, a password, or a raw secret value. `logs/` is user data and is treated as such in [SECURITY.md](SECURITY.md).
+- Never log a token, a password, or a raw secret value. Container logs are user data and are treated as such in [SECURITY.md](SECURITY.md).
 
 ## TypeScript conventions
 
