@@ -1,3 +1,10 @@
+# Every service logs to stdout and stderr, and nothing writes log files of its own.
+x-logging: &default-logging
+    driver: json-file
+    options:
+        max-size: '10m'
+        max-file: '5'
+
 services:
     shiveron_bot:
         build:
@@ -31,8 +38,7 @@ services:
         secrets:
             - discord_token
             - db_pass
-        volumes:
-            - ./logs:/usr/src/app/logs
+        logging: *default-logging
         networks:
             - shiveron-net
 
@@ -66,6 +72,7 @@ services:
             retries: 30
             # The first boot downloads the language models, which takes several minutes.
             start_period: 300s
+        logging: *default-logging
         networks:
             - shiveron-net
 
@@ -86,6 +93,7 @@ services:
             interval: 5s
             timeout: 5s
             retries: 5
+        logging: *default-logging
         networks:
             - shiveron-net
 

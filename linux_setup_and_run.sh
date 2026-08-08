@@ -7,8 +7,6 @@ RESET="\e[0m"
 ENV_CREATED=false
 SECRETS_CREATED=false
 
-mkdir -p logs
-
 if [ -d secrets_example ]; then
     echo -e "${CYAN}Creating the secrets directory ...${RESET}"
 
