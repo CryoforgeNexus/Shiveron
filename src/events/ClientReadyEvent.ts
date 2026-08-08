@@ -7,10 +7,16 @@ export default class ClientReadyEvent extends BaseEvent<'clientReady'> {
 	public once = true;
 
 	/**
-	 * Logs the bot's tag to confirm a successful login.
+	 * Logs the bot's tag to confirm a successful login, then probes LibreTranslate. An unreachable translation backend is not fatal: the rest of the bot works, and only the translation features fail, so this is surfaced as a warning at boot rather than as an error per message.
 	 * @param client - The bot client instance, used to access `client.user.tag`.
 	 */
 	public async execute(client: ShiveronClient): Promise<void> {
 		client.logger.info(`Logged in as ${client.user?.tag}.`);
+
+		if (await client.libreTranslate.isAvailable()) {
+			client.logger.info('LibreTranslate is reachable.');
+		} else {
+			client.logger.warn('LibreTranslate is unreachable. Translation features will fail until it recovers.');
+		}
 	}
 }
