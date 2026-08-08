@@ -1,6 +1,3 @@
-import path from 'path';
-import fs from 'fs';
-
 export enum LogLevel {
 	INFO = 'info',
 	WARN = 'warn',
@@ -8,19 +5,10 @@ export enum LogLevel {
 	DEBUG = 'debug',
 }
 
-/** Logger that writes formatted messages to the console and to log files under `logs/`. */
+/**
+ * Logger that writes formatted messages to the console.
+ */
 export class ShiveronLogger {
-	private logDir = path.join(process.cwd(), 'logs');
-	private standardLog = path.join(this.logDir, 'standard.log');
-	private debugLog = path.join(this.logDir, 'debug.log');
-
-	/** Creates the `logs/` directory if it does not already exist. */
-	public constructor() {
-		if (!fs.existsSync(this.logDir)) {
-			fs.mkdirSync(this.logDir, { recursive: true });
-		}
-	}
-
 	/**
 	 * Pads a number to at least 2 digits with a leading zero.
 	 * @param num - The number to pad.
@@ -52,62 +40,34 @@ export class ShiveronLogger {
 	}
 
 	/**
-	 * Appends a formatted message to the appropriate log file(s). DEBUG messages are only written to `debug.log`; all others go to both `standard.log` and `debug.log`.
-	 * @param level - The log level used to decide which files to write to.
-	 * @param formattedMessage - The already-formatted log line to write.
-	 */
-	private async writeToFile(level: LogLevel, formattedMessage: string) {
-		if (level != LogLevel.DEBUG) {
-			fs.appendFile(this.standardLog, formattedMessage + '\n', (error) => {
-				if (error) {
-					console.error('Log Error (standard.log):', error);
-				}
-			});
-		}
-		fs.appendFile(this.debugLog, formattedMessage + '\n', (error) => {
-			if (error) {
-				console.error('Log Error (debug.log):', error);
-			}
-		});
-	}
-
-	/**
-	 * Logs an informational message to the console and log files.
+	 * Logs an informational message.
 	 * @param message - The message to log.
 	 */
 	public info(message: string): void {
-		const formatted = this.formatMessage(LogLevel.INFO, message);
-		console.info(formatted);
-		this.writeToFile(LogLevel.INFO, formatted);
+		console.info(this.formatMessage(LogLevel.INFO, message));
 	}
 
 	/**
-	 * Logs a warning message to the console and log files.
+	 * Logs a warning message.
 	 * @param message - The message to log.
 	 */
 	public warn(message: string): void {
-		const formatted = this.formatMessage(LogLevel.WARN, message);
-		console.warn(formatted);
-		this.writeToFile(LogLevel.WARN, formatted);
+		console.warn(this.formatMessage(LogLevel.WARN, message));
 	}
 
 	/**
-	 * Logs an error message to the console and log files.
+	 * Logs an error message.
 	 * @param message - The message to log.
 	 */
 	public error(message: string): void {
-		const formatted = this.formatMessage(LogLevel.ERROR, message);
-		console.error(formatted);
-		this.writeToFile(LogLevel.ERROR, formatted);
+		console.error(this.formatMessage(LogLevel.ERROR, message));
 	}
 
 	/**
-	 * Logs a debug message to the console and the debug log file only.
+	 * Logs a debug message.
 	 * @param message - The message to log.
 	 */
 	public debug(message: string): void {
-		const formatted = this.formatMessage(LogLevel.DEBUG, message);
-		console.debug(formatted);
-		this.writeToFile(LogLevel.DEBUG, formatted);
+		console.debug(this.formatMessage(LogLevel.DEBUG, message));
 	}
 }
