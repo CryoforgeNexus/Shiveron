@@ -68,7 +68,7 @@ To invite the bot to a server:
         ```
 
 > [!NOTE]
-> The first startup takes a few minutes, because the translation language models are downloaded before the bot can start. Follow the progress with `docker compose logs -f`.
+> The first startup takes a few minutes, because the translation language models are downloaded before the bot can start. The bot container stays idle until LibreTranslate reports itself healthy, so it logs nothing during that time. Watch `docker compose ps` for the LibreTranslate container to turn healthy, then follow the bot with `docker compose logs -f`.
 
 ## Contributing
 

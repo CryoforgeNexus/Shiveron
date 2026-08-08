@@ -165,7 +165,7 @@ docker compose logs -f
 docker compose stop
 ```
 
-The first startup downloads the LibreTranslate language models and takes several minutes.
+The first startup downloads the LibreTranslate language models and takes several minutes. The bot waits on LibreTranslate's healthcheck through `depends_on`, so its container produces no output at all until the models are in place. `docker compose ps` is the way to watch that first boot.
 
 Set `NODE_ENV=development` and `DISCORD_GUILD_ID` in `.env` while iterating, so slash commands register against a single test guild instead of globally.
 
