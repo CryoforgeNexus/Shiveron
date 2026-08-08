@@ -10,8 +10,7 @@ export default class MessageCreateEvent extends BaseEvent<'messageCreate'> {
 	public once = false;
 
 	/**
-	 * Checks the language of every non-bot guild message. If it differs from the guild's configured
-	 * language and LibreTranslate is confident enough, replies with a translation embed.
+	 * Checks the language of every non-bot guild message. If it differs from the guild's configured language and LibreTranslate is confident enough, replies with a translation embed.
 	 * @param client - The bot client instance.
 	 * @param message - The newly created message.
 	 */
@@ -35,6 +34,7 @@ export default class MessageCreateEvent extends BaseEvent<'messageCreate'> {
 						const { translatedText } = await client.libreTranslate.translate(
 							message.content,
 							currentGuild.lang,
+							detectedLanguage.language,
 						);
 						const t = (key: string, vars?: Record<string, any>) =>
 							client.i18n.translate(currentGuild.lang, key, vars);
@@ -56,7 +56,7 @@ export default class MessageCreateEvent extends BaseEvent<'messageCreate'> {
 								}),
 							});
 
-						message.reply({ embeds: [embed] });
+						await message.reply({ embeds: [embed] });
 						client.logger.debug(
 							`Auto-translated message ${message.id} from ${detectedLanguage.language} to ${currentGuild.lang} in guild ${message.guildId}`,
 						);
