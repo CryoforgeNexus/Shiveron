@@ -27,6 +27,10 @@ export const TRANSLATION_MIN_CONFIDENCE = 70;
 // Messages shorter than this are not worth detecting.
 export const TRANSLATION_MIN_MESSAGE_LENGTH = 12;
 
+// Presence
+// Shown under the bot's name in the member list. Not translated: presence is set once per process, not per guild, so there is no locale to bind it to.
+export const BOT_PRESENCE_TEXT = 'cryoforgenexus.com';
+
 // Translation cache
 // Entries held per cache before the least recently used one is evicted.
 export const TRANSLATION_CACHE_MAX_ENTRIES = 500;

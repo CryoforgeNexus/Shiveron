@@ -10,7 +10,7 @@ import { GuildSettingsService } from '../services/GuildSettingsService.js';
 import { VoiceService } from '../services/VoiceService.js';
 import { InfractionService } from '../services/InfractionService.js';
 import { getConfig } from '../utils/config.js';
-import { INFRACTION_EXPIRY_CHECK_INTERVAL_MS } from '../utils/constants.js';
+import { BOT_PRESENCE_TEXT, INFRACTION_EXPIRY_CHECK_INTERVAL_MS } from '../utils/constants.js';
 import { CollectorManager } from '../events/voice/CollectorManager.js';
 import { I18N } from './I18N.js';
 import { LibreTranslateService } from '../services/LibreTranslateService.js';
@@ -52,8 +52,7 @@ export class ShiveronClient extends Client {
 	}
 
 	/**
-	 * Boots the bot: connects to the database, loads locales, registers commands and events,
-	 * logs in to Discord, starts the infraction expiry check interval, and sets the bot's presence.
+	 * Boots the bot: connects to the database, loads locales, registers commands and events, logs in to Discord, starts the infraction expiry check interval, and sets the bot's presence.
 	 */
 	public async start(): Promise<void> {
 		await this.db.connect();
@@ -69,17 +68,16 @@ export class ShiveronClient extends Client {
 		this.user!.setPresence({
 			activities: [
 				{
-					name: 'SIX SEVEN',
-					type: ActivityType.Listening,
+					name: BOT_PRESENCE_TEXT,
+					type: ActivityType.Watching,
 				},
 			],
-			status: 'dnd',
+			status: 'online',
 		});
 	}
 
 	/**
-	 * Dynamically imports all command files from `dist/commands` subdirectories
-	 * and registers each one that has a valid default export with a `data` property.
+	 * Dynamically imports all command files from `dist/commands` subdirectories and registers each one that has a valid default export with a `data` property.
 	 */
 	private async loadCommands(): Promise<void> {
 		const foldersPath = path.join(process.cwd(), 'dist/commands');
@@ -121,8 +119,7 @@ export class ShiveronClient extends Client {
 	}
 
 	/**
-	 * Dynamically imports all event files from `dist/events`
-	 * and registers each one that has a valid default export with a `name` property.
+	 * Dynamically imports all event files from `dist/events` and registers each one that has a valid default export with a `name` property.
 	 */
 	private async loadEvents(): Promise<void> {
 		const eventsPath = path.join(process.cwd(), 'dist/events');
@@ -164,8 +161,7 @@ export class ShiveronClient extends Client {
 	}
 
 	/**
-	 * Deploys all loaded slash commands to Discord via the REST API.
-	 * Deploys to a specific guild in development mode, or globally otherwise.
+	 * Deploys all loaded slash commands to Discord via the REST API. Deploys to a specific guild in development mode, or globally otherwise.
 	 */
 	private async registerSlashCommands(): Promise<void> {
 		const rest = new REST({ version: '10' }).setToken(getConfig('DISCORD_TOKEN')!);
