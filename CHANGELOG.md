@@ -7,7 +7,7 @@ All notable changes to Shiveron are documented here. Versions follow [Semantic V
 ### Added
 - LibreTranslate reachability is checked at startup and reported in the logs, instead of only failing at the first translation
 - LibreTranslate timings are logged at `debug` level, so slow translations can be attributed to the backend rather than guessed at
-- `LT_THREADS` and `LT_LOAD_ONLY` in `.env.example`, to tune LibreTranslate's CPU use and the set of loaded language models
+- `LT_THREADS` and `LT_LOAD_ONLY` in `.env.example`, to tune LibreTranslate's CPU use and the set of loaded language models. `linux_setup_and_run.sh` prompts for both
 
 ### Changed
 - Guild settings are cached in memory after the first read, removing a database round trip from every message and voice state change

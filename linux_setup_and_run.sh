@@ -58,6 +58,14 @@ if [ -f .env.example ]; then
             * ) echo -e "${CYAN}Please answer y or n.${RESET}";;
         esac
     done
+
+    prompt_env "LT_THREADS" "CPU threads LibreTranslate may use for translation (leave empty for 4)"
+
+    # Left commented out in .env.example when no answer is given: LibreTranslate reads an empty value as the language code "", installs no models and refuses to start.
+    read -p "$(echo -e "${CYAN}Languages LibreTranslate should load, comma-separated, e.g. en,fr,de (leave empty for all):${RESET} ")" lt_load_only
+    if [ -n "$lt_load_only" ]; then
+        sed -i "s|^# LT_LOAD_ONLY=.*|LT_LOAD_ONLY=$lt_load_only|" .env
+    fi
 else
     echo -e "${CYAN}.env.example not found, assuming .env was already configured.${RESET}"
 fi
