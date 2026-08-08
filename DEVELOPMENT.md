@@ -92,6 +92,8 @@ PostgreSQL through Sequelize. `Database.connect()` authenticates, then runs `syn
 - Model files declare their attributes twice, once as a TypeScript interface and once in the Sequelize `init` call. Keep them in sync; the compiler cannot check this for you.
 - Query only from services.
 
+`GuildSettingsService` caches rows in memory, because guild settings are read on nearly every message and every voice state change. The cache is correct only because the service is the sole writer of `GuildSettings`: it invalidates on update and on delete. Writing that table from anywhere else silently serves stale settings until the process restarts. The cache is also per-process, so running more than one bot instance against one database would need it replaced with a shared store.
+
 ## Logging and error handling
 
 - Use `client.logger` (`ShiveronLogger`), never `console.log`. It writes timestamped lines to both the console and `logs/`, splitting `debug` output into its own file.

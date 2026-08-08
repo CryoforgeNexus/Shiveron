@@ -90,6 +90,7 @@ If an implementation conflicts with these rules, **prefer preserving the archite
 - PostgreSQL through Sequelize. `Database.connect()` retries every 5 seconds so the bot container can start before Postgres is ready.
 - `sync({ alter: true })` means the models **are** the migration. Additive changes are safe; renames and type narrowing are destructive.
 - Model attributes are declared twice (TypeScript interface and Sequelize `init`). Keep both in sync; the compiler cannot check this.
+- `GuildSettingsService` caches rows in memory and is the **only** writer of `GuildSettings`. Writing that table anywhere else serves stale settings until restart.
 
 **Internationalization**
 - Keys are dot-separated paths into nested JSON, resolved by `I18N.translate`, with `${name}` interpolation.

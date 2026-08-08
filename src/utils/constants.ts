@@ -23,5 +23,10 @@ export const DEFAULT_TIMEOUT_MS = MS_PER_HOUR;
 // Translation (auto-detect)
 // Minimum confidence (0–100) to surface a translation.
 export const TRANSLATION_MIN_CONFIDENCE = 70;
+
 // Messages shorter than this are not worth detecting.
-export const TRANSLATION_MIN_MESSAGE_LENGTH = 4;
+export const TRANSLATION_MIN_MESSAGE_LENGTH = 12;
+
+// Translation cache
+// Entries held per cache before the least recently used one is evicted.
+export const TRANSLATION_CACHE_MAX_ENTRIES = 500;
