@@ -4,7 +4,18 @@ All notable changes to Shiveron are documented here. Versions follow [Semantic V
 
 ## [Unreleased]
 
+### Added
+- LibreTranslate reachability is checked at startup and reported in the logs, instead of only failing at the first translation
+- LibreTranslate timings are logged at `debug` level, so slow translations can be attributed to the backend rather than guessed at
+- `LT_THREADS` and `LT_LOAD_ONLY` in `.env.example`, to tune LibreTranslate's CPU use and the set of loaded language models
+
 ### Changed
+- Guild settings are cached in memory after the first read, removing a database round trip from every message and voice state change
+- Translation and language detection results are cached, so repeated phrases no longer re-run neural inference
+- Auto-translation passes the already-detected source language to LibreTranslate instead of making it detect the language a second time
+- Auto-translation ignores messages shorter than 12 characters, up from 4; detection on a handful of characters was guesswork the confidence gate rejected anyway
+- LibreTranslate has a healthcheck and the bot waits on it through `depends_on`, replacing the polling loop in the container entrypoint
+- Bot presence now points at Cryoforge Nexus
 - `VoiceStateUpdateEvent` split into `src/events/voice/`: the handler now only routes, with channel lifecycle, the owner's control panel, the control message, permission building, and collector tracking each in their own module
 - `VoiceCollectorManager` renamed to `CollectorManager` and moved alongside the rest of the voice code; the client property is now `client.collectorManager`
 - Development moved to Cryoforge Nexus' Forgejo instance at `git.cryoforgenexus.com/Shiveron/shiveron`. GitHub is now a read-only mirror; issues and pull requests go to Forgejo
@@ -14,6 +25,8 @@ All notable changes to Shiveron are documented here. Versions follow [Semantic V
 - Issue and pull request numbers in commits predating the migration refer to the archived GitHub tracker. History was not rewritten; `CONTRIBUTING.md` explains how to resolve them
 
 ### Fixed
+- Bot failing to write its log files when `logs/` was created by Docker as root, which happened on any host where the directory did not already exist
+- Auto-translation reply not being awaited, so a failed reply surfaced as an unhandled rejection instead of being logged
 - Setup panel throwing instead of stopping cleanly when the join, leave or ban message prompt timed out
 
 ## [v1.2.0] — Message translation
