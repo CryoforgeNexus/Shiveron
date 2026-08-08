@@ -9,9 +9,7 @@ import {
 import { INTERACTION_TIMEOUT_MS } from '../constants.js';
 
 /**
- * Waits for a single component interaction on a message from a specific user, while replying
- * with an error to anyone else who tries to interact.
- * Removes all components from the message after the interaction is resolved or times out.
+ * Waits for a single component interaction on a message from a specific user, while replying with an error to anyone else who tries to interact. Removes all components from the message after the interaction is resolved or times out.
  * @param message - The message containing the components to listen on.
  * @param ownerId - The Discord user ID of the only person allowed to interact.
  * @param componentType - The type of component to await (e.g., `ComponentType.Button`).

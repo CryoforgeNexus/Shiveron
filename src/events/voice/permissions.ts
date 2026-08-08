@@ -29,9 +29,7 @@ const BASE_EVERYONE_PERMISSIONS = [
 ];
 
 /**
- * Builds the full permission overrides array for a temp voice channel based on the owner's saved settings and ACL.
- * Grants the owner MoveMembers + full access, applies everyone permissions based on soundboard/stream/activities/private flags,
- * and adds individual allow/deny entries for each ACL member.
+ * Builds the full permission overrides array for a temp voice channel based on the owner's saved settings and ACL. Grants the owner MoveMembers + full access, applies everyone permissions based on soundboard/stream/activities/private flags, and adds individual allow/deny entries for each ACL member.
  * @param ownerId - The Discord user ID of the channel owner.
  * @param everyoneId - The ID of the guild's @everyone role.
  * @param tempVoice - The saved TempVoice settings used to determine permission flags.

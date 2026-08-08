@@ -51,8 +51,7 @@ const PERMISSION_TOGGLES: Record<string, PermissionToggle> = {
 };
 
 /**
- * Attaches a string select menu collector to the channel control message.
- * Dispatches each selection to the appropriate handler and refreshes the control message afterward.
+ * Attaches a string select menu collector to the channel control message. Dispatches each selection to the appropriate handler and refreshes the control message afterward.
  * @param client - The bot client instance.
  * @param t - Translation function for the guild's locale.
  * @param message - The channel control message to attach the collector to.
@@ -95,8 +94,7 @@ export function attachControlCollector(
 }
 
 /**
- * Sets up a message collector that automatically deletes older messages in the channel
- * whenever a new one arrives, keeping at most `messagesToKeep` non-control messages.
+ * Sets up a message collector that automatically deletes older messages in the channel whenever a new one arrives, keeping at most `messagesToKeep` non-control messages.
  * @param client - The bot client, used to register the collector in CollectorManager.
  * @param channel - The voice channel to watch for new messages.
  * @param channelControlMessageId - The ID of the pinned control message, excluded from deletion.
@@ -228,8 +226,7 @@ async function refreshChannelControls(
 }
 
 /**
- * Adds thumbs-up / thumbs-down buttons to a message and waits for the owner to choose
- * whether to save a setting as the new default for future channels.
+ * Adds thumbs-up / thumbs-down buttons to a message and waits for the owner to choose whether to save a setting as the new default for future channels.
  * @param t - Translation function for the guild's locale.
  * @param message - The message to append the buttons to.
  * @param targetId - The Discord user ID of the channel owner; only they may press the buttons.
@@ -310,8 +307,7 @@ async function processNameChange(
 }
 
 /**
- * Flips one of the @everyone permission toggles (soundboard, streams, activities) on the live channel
- * and optionally saves the new state as the owner's default.
+ * Flips one of the @everyone permission toggles (soundboard, streams, activities) on the live channel and optionally saves the new state as the owner's default.
  * @param client - The bot client instance, used to update TempVoice settings.
  * @param interaction - The select menu interaction that triggered this action.
  * @param t - Translation function for the guild's locale.
@@ -350,8 +346,7 @@ async function processPermissionToggle(
 }
 
 /**
- * Toggles the channel between public and private (hides it from @everyone if private)
- * and optionally saves the new state as default.
+ * Toggles the channel between public and private (hides it from @everyone if private) and optionally saves the new state as default.
  * @param client - The bot client instance, used to update TempVoice settings.
  * @param interaction - The select menu interaction that triggered this action.
  * @param t - Translation function for the guild's locale.
@@ -399,8 +394,7 @@ async function processPrivateChannel(
 }
 
 /**
- * Prompts the owner to set a new message retention limit (or type `"none"` to disable auto-deletion)
- * and saves the setting to the database.
+ * Prompts the owner to set a new message retention limit (or type `"none"` to disable auto-deletion) and saves the setting to the database.
  * @param client - The bot client instance, used to update TempVoice settings.
  * @param interaction - The select menu interaction that triggered this action.
  * @param t - Translation function for the guild's locale.
@@ -452,8 +446,7 @@ async function processMessageDeletion(
 }
 
 /**
- * Presents a user select menu to add/remove members from the channel's whitelist or blacklist.
- * Toggling an already-listed member removes them; otherwise adds them with the corresponding permission override.
+ * Presents a user select menu to add/remove members from the channel's whitelist or blacklist. Toggling an already-listed member removes them; otherwise adds them with the corresponding permission override.
  * @param client - The bot client instance, used to update VoiceACL records.
  * @param interaction - The select menu interaction that triggered this action.
  * @param t - Translation function for the guild's locale.

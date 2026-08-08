@@ -29,8 +29,7 @@ export class VoiceService {
 	}
 
 	/**
-	 * Retrieves an existing TempVoice record for the given owner, or creates one with defaults.
-	 * Also fetches all VoiceACL entries associated with the owner in that guild.
+	 * Retrieves an existing TempVoice record for the given owner, or creates one with defaults. Also fetches all VoiceACL entries associated with the owner in that guild.
 	 * @param guildId - The Discord guild ID.
 	 * @param owner - The GuildMember who owns (or will own) the temp channel.
 	 * @returns An object with `tempVoice`, `voiceACL`, and `created` (`true` if the record was just created).

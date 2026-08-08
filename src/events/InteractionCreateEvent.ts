@@ -8,8 +8,7 @@ export default class InterationCreateEvent extends BaseEvent<'interactionCreate'
 	public once = false;
 
 	/**
-	 * Handles incoming interactions. For slash commands, resolves the guild locale,
-	 * builds a `t()` translation function, and dispatches to the matching command's `execute` method.
+	 * Handles incoming interactions. For slash commands, resolves the guild locale, builds a `t()` translation function, and dispatches to the matching command's `execute` method.
 	 * @param client - The bot client instance.
 	 * @param interaction - The Interaction object from Discord (may be any interaction type).
 	 */

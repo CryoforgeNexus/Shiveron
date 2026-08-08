@@ -20,8 +20,7 @@ export interface ChannelControlMessage {
 }
 
 /**
- * Builds the channel control message content: a status embed and a select menu for channel options.
- * Shows whitelist or blacklist fields based on channel visibility, and reflects current vs. saved settings.
+ * Builds the channel control message content: a status embed and a select menu for channel options. Shows whitelist or blacklist fields based on channel visibility, and reflects current vs. saved settings.
  * @param t - Translation function for the guild's locale.
  * @param owner - The GuildMember who owns this temp channel.
  * @param guild - The guild the channel belongs to.
@@ -124,8 +123,7 @@ export function createChannelControlMessage(
 }
 
 /**
- * Renders the status of a channel setting, marking it as temporary when the live channel
- * state differs from what the owner has saved as their default.
+ * Renders the status of a channel setting, marking it as temporary when the live channel state differs from what the owner has saved as their default.
  * @param t - Translation function for the guild's locale.
  * @param savedState - The owner's saved default for this setting.
  * @param liveState - The state the channel is actually in right now.

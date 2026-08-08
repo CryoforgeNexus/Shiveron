@@ -35,8 +35,7 @@ export class Database {
 	}
 
 	/**
-	 * Attempts to authenticate and sync the database, retrying every 5 seconds on failure.
-	 * Runs `sync({ alter: true })` to apply any schema changes.
+	 * Attempts to authenticate and sync the database, retrying every 5 seconds on failure. Runs `sync({ alter: true })` to apply any schema changes.
 	 */
 	public async connect(): Promise<void> {
 		let connectionSuccessful = false;

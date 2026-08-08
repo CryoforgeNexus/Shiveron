@@ -10,9 +10,7 @@ export default class MessageReactionAddEvent extends BaseEvent<'messageReactionA
 	public once = false;
 
 	/**
-	 * Checks whether the added reaction is a flag emoji. If so, translates the
-	 * reacted message into the flag's language and sends the result as a DM to
-	 * the user who reacted (closest equivalent to an ephemeral reply for reactions).
+	 * Checks whether the added reaction is a flag emoji. If so, translates the reacted message into the flag's language and sends the result as a DM to the user who reacted (closest equivalent to an ephemeral reply for reactions).
 	 * @param client - The bot client instance.
 	 * @param reaction - The reaction that was added.
 	 * @param user - The user who added the reaction.

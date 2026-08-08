@@ -3,8 +3,7 @@ import path from 'path';
 import { interpolate } from '../utils/formatters.js';
 
 /**
- * A locale-bound translation function. Callers that already know which guild they are serving
- * close over the locale once and pass this around instead of threading the locale everywhere.
+ * A locale-bound translation function. Callers that already know which guild they are serving close over the locale once and pass this around instead of threading the locale everywhere.
  */
 export type Translator = (path: string, vars?: Record<string, any>) => string;
 
@@ -18,8 +17,7 @@ export class I18N {
 	}
 
 	/**
-	 * Reads all `.json` files from the `dist/locales` directory and loads them into the translations map,
-	 * keyed by their filename (e.g., `en`, `fr`).
+	 * Reads all `.json` files from the `dist/locales` directory and loads them into the translations map, keyed by their filename (e.g., `en`, `fr`).
 	 */
 	public loadLocales() {
 		const localesPath = path.join(process.cwd(), 'dist/locales');
@@ -58,8 +56,7 @@ export class I18N {
 	}
 
 	/**
-	 * Resolves a translation key for the given locale, falling back to `en` if the locale is not loaded.
-	 * Interpolates any provided variables into the template string.
+	 * Resolves a translation key for the given locale, falling back to `en` if the locale is not loaded. Interpolates any provided variables into the template string.
 	 * @param locale - The locale code to look up (e.g., `"fr"`).
 	 * @param keyPath - A dot-separated key path into the locale bundle.
 	 * @param vars - Optional key-value pairs to interpolate into the template (e.g., `{ user: "Alice" }`).

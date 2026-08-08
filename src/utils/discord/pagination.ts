@@ -11,8 +11,7 @@ import {
 import type { ShiveronClient } from '../../core/ShiveronClient.js';
 
 /**
- * Sends the first page of a paginated embed list as a reply to a slash command interaction,
- * and attaches navigation buttons and a collector to handle page changes.
+ * Sends the first page of a paginated embed list as a reply to a slash command interaction, and attaches navigation buttons and a collector to handle page changes.
  * @param client - The bot client, used for error logging in the pagination collector.
  * @param interaction - The slash command interaction to reply to.
  * @param pages - An array of EmbedBuilders, one per page.
@@ -34,8 +33,7 @@ export async function paginateFromInteraction(
 }
 
 /**
- * Creates an ActionRow containing five pagination buttons: first, previous, page counter, next, last.
- * Navigation buttons are disabled when there is only one page.
+ * Creates an ActionRow containing five pagination buttons: first, previous, page counter, next, last. Navigation buttons are disabled when there is only one page.
  * @param pagesAmount - The total number of pages, used to disable next/last on single-page results.
  */
 function createButtonsPagination(pagesAmount: number): ActionRowBuilder<ButtonBuilder> {
@@ -102,9 +100,7 @@ function disableButtonsPagination(buttons: ActionRowBuilder<ButtonBuilder>): voi
 }
 
 /**
- * Attaches a message component collector to a paginated message.
- * Handles button clicks to navigate between pages, restricts use to the original command author,
- * and disables buttons after the timeout expires.
+ * Attaches a message component collector to a paginated message. Handles button clicks to navigate between pages, restricts use to the original command author, and disables buttons after the timeout expires.
  * @param client - The bot client, used for error logging.
  * @param message - The message the buttons are attached to.
  * @param ownerId - The Discord user ID of the person allowed to use the pagination buttons.

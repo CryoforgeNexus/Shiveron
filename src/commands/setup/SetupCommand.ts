@@ -209,8 +209,7 @@ export default class SetupCommand extends BaseCommand {
 	}
 
 	/**
-	 * Attaches a string select menu collector to the setup message.
-	 * Routes each selection to the appropriate feature configuration method and refreshes the setup view afterward.
+	 * Attaches a string select menu collector to the setup message. Routes each selection to the appropriate feature configuration method and refreshes the setup view afterward.
 	 * @param client - The bot client instance.
 	 * @param t - Translation function for localized UI text.
 	 * @param message - The setup message the collector is attached to.
@@ -279,8 +278,7 @@ export default class SetupCommand extends BaseCommand {
 	}
 
 	/**
-	 * Handles the departure message setup flow. If departure is already configured,
-	 * offers the user a choice to reconfigure or disable it; otherwise goes directly to configuration.
+	 * Handles the departure message setup flow. If departure is already configured, offers the user a choice to reconfigure or disable it; otherwise goes directly to configuration.
 	 * @param client - The bot client instance.
 	 * @param interaction - The select menu interaction that triggered this flow.
 	 * @param t - Translation function for localized UI text.
@@ -357,8 +355,7 @@ export default class SetupCommand extends BaseCommand {
 	}
 
 	/**
-	 * Handles the temp voice setup flow. If temp voice is already configured,
-	 * offers the user a choice to reconfigure or disable it; otherwise goes directly to configuration.
+	 * Handles the temp voice setup flow. If temp voice is already configured, offers the user a choice to reconfigure or disable it; otherwise goes directly to configuration.
 	 * @param client - The bot client instance.
 	 * @param interaction - The select menu interaction that triggered this flow.
 	 * @param t - Translation function for localized UI text.
@@ -428,8 +425,7 @@ export default class SetupCommand extends BaseCommand {
 	}
 
 	/**
-	 * Handles the max warnings setup flow. If max warnings is already configured,
-	 * offers the user a choice to reconfigure or disable it; otherwise goes directly to configuration.
+	 * Handles the max warnings setup flow. If max warnings is already configured, offers the user a choice to reconfigure or disable it; otherwise goes directly to configuration.
 	 * @param client - The bot client instance.
 	 * @param interaction - The select menu interaction that triggered this flow.
 	 * @param t - Translation function for localized UI text.
@@ -499,8 +495,7 @@ export default class SetupCommand extends BaseCommand {
 	}
 
 	/**
-	 * Handles the auto-translation setup flow. If auto-translation is already enabled,
-	 * offers the user a choice to reconfigure or disable it; otherwise enables it directly.
+	 * Handles the auto-translation setup flow. If auto-translation is already enabled, offers the user a choice to reconfigure or disable it; otherwise enables it directly.
 	 * @param client - The bot client instance.
 	 * @param interaction - The select menu interaction that triggered this flow.
 	 * @param t - Translation function for localized UI text.
@@ -571,8 +566,7 @@ export default class SetupCommand extends BaseCommand {
 	}
 
 	/**
-	 * Handles the boost message setup flow. If boost is already configured,
-	 * offers the user a choice to reconfigure or disable it; otherwise goes directly to configuration.
+	 * Handles the boost message setup flow. If boost is already configured, offers the user a choice to reconfigure or disable it; otherwise goes directly to configuration.
 	 * @param client - The bot client instance.
 	 * @param interaction - The select menu interaction that triggered this flow.
 	 * @param t - Translation function for localized UI text.
@@ -713,8 +707,7 @@ export default class SetupCommand extends BaseCommand {
 	}
 
 	/**
-	 * Guides the user through setting up a join or leave message: picks the message type (join/leave),
-	 * selects a target channel, then awaits a text message from the user to use as the template.
+	 * Guides the user through setting up a join or leave message: picks the message type (join/leave), selects a target channel, then awaits a text message from the user to use as the template.
 	 * @param client - The bot client instance.
 	 * @param interaction - The component interaction that triggered this configuration step.
 	 * @param t - Translation function for localized UI text.
@@ -1098,8 +1091,7 @@ export default class SetupCommand extends BaseCommand {
 	}
 
 	/**
-	 * Sends a fresh setup message to the channel after a configuration step completes,
-	 * re-attaching the collector so the user can continue configuring other features.
+	 * Sends a fresh setup message to the channel after a configuration step completes, re-attaching the collector so the user can continue configuring other features.
 	 * @param client - The bot client instance.
 	 * @param interaction - The select menu interaction whose channel the new message is sent to.
 	 * @param t - Translation function for localized UI text.

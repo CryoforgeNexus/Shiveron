@@ -7,8 +7,7 @@ import { buildUserVoicePermissions } from './permissions.js';
 import { attachControlCollector, createAutoMessageDeletion } from './controls.js';
 
 /**
- * Handles a member joining a voice channel. Creates a new temp channel if they joined the trigger channel,
- * or adds them to the successor list if they joined an existing temp channel.
+ * Handles a member joining a voice channel. Creates a new temp channel if they joined the trigger channel, or adds them to the successor list if they joined an existing temp channel.
  * @param client - The bot client instance.
  * @param t - Translation function for the guild's locale.
  * @param newState - The member's new voice state (channel they joined).
@@ -54,8 +53,7 @@ export async function handleVoiceChannelJoin(
 }
 
 /**
- * Handles a member leaving a voice channel. Deletes the temp channel if empty,
- * transfers ownership if the owner left while others remain, or removes the member from the successor list.
+ * Handles a member leaving a voice channel. Deletes the temp channel if empty, transfers ownership if the owner left while others remain, or removes the member from the successor list.
  * @param client - The bot client instance.
  * @param t - Translation function for the guild's locale.
  * @param oldState - The member's old voice state (channel they left).
@@ -129,8 +127,7 @@ export async function handleVoiceChannelLeave(
 }
 
 /**
- * Creates a new temporary voice channel for the joining member, applying their saved settings and ACL.
- * Sends the channel control message and sets up the message deletion and control collectors.
+ * Creates a new temporary voice channel for the joining member, applying their saved settings and ACL. Sends the channel control message and sets up the message deletion and control collectors.
  * @param client - The bot client instance.
  * @param t - Translation function for the guild's locale.
  * @param newState - The member's new voice state, used to get the guild and member.
@@ -210,8 +207,7 @@ async function deleteTempChannel(
 }
 
 /**
- * Transfers ownership of a temp channel to the next person in the successor list (or the first member in the channel).
- * Applies the new owner's saved settings, updates the control message, and sets up fresh collectors.
+ * Transfers ownership of a temp channel to the next person in the successor list (or the first member in the channel). Applies the new owner's saved settings, updates the control message, and sets up fresh collectors.
  * @param client - The bot client instance.
  * @param t - Translation function for the guild's locale.
  * @param guild - The guild the channel belongs to.
@@ -296,8 +292,7 @@ async function changeTempChannelOwner(
 }
 
 /**
- * Resets the database state for a temp channel (clears channelId, successor list, etc.)
- * and removes the owner's Connect deny override from the trigger channel.
+ * Resets the database state for a temp channel (clears channelId, successor list, etc.) and removes the owner's Connect deny override from the trigger channel.
  * @param client - The bot client instance.
  * @param guildId - The Discord guild ID.
  * @param ownerId - The Discord user ID of the channel owner whose state should be cleared.

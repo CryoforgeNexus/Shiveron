@@ -5,9 +5,7 @@ import { ShiveronClient } from '../core/ShiveronClient.js';
 import { handleVoiceChannelJoin, handleVoiceChannelLeave } from './voice/lifecycle.js';
 
 /**
- * Handles all voice state changes (joins, leaves, channel switches) to manage temporary voice channels.
- * The work itself lives in `./voice/`: channel creation, deletion and ownership transfer in
- * `lifecycle`, and the owner's control panel in `controls`.
+ * Handles all voice state changes (joins, leaves, channel switches) to manage temporary voice channels. The work itself lives in `./voice/`: channel creation, deletion and ownership transfer in `lifecycle`, and the owner's control panel in `controls`.
  */
 export default class VoiceStateUpdateEvent extends BaseEvent<'voiceStateUpdate'> {
 	public readonly name = 'voiceStateUpdate';
@@ -15,8 +13,7 @@ export default class VoiceStateUpdateEvent extends BaseEvent<'voiceStateUpdate'>
 	private lock = new AsyncLock();
 
 	/**
-	 * Entry point for voice state changes. Acquires a per-channel lock to prevent race conditions,
-	 * then delegates to join/leave handlers if the member actually changed channels.
+	 * Entry point for voice state changes. Acquires a per-channel lock to prevent race conditions, then delegates to join/leave handlers if the member actually changed channels.
 	 * @param client - The bot client instance.
 	 * @param oldState - The member's voice state before the change.
 	 * @param newState - The member's voice state after the change.

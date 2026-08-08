@@ -1,7 +1,5 @@
 /**
- * Maps ISO 3166-1 alpha-2 country codes (lowercase) to BCP 47 language codes
- * understood by LibreTranslate. Only includes countries where the primary language
- * is unambiguous enough to be useful for auto-translation.
+ * Maps ISO 3166-1 alpha-2 country codes (lowercase) to BCP 47 language codes understood by LibreTranslate. Only includes countries where the primary language is unambiguous enough to be useful for auto-translation.
  */
 const COUNTRY_TO_LANG: Readonly<Record<string, string>> = {
 	// A
@@ -226,8 +224,7 @@ export function countryCodeToFlagEmoji(countryCode: string): string {
 }
 
 /**
- * Returns the flag emoji for a given BCP 47 language code (e.g. "fr" → 🇫🇷).
- * Returns an empty string if the language has no canonical country in the map.
+ * Returns the flag emoji for a given BCP 47 language code (e.g. "fr" → 🇫🇷). Returns an empty string if the language has no canonical country in the map.
  */
 export function langCodeToFlagEmoji(langCode: string): string {
 	const country = LANG_TO_COUNTRY[langCode];
@@ -235,9 +232,7 @@ export function langCodeToFlagEmoji(langCode: string): string {
 }
 
 /**
- * Converts a flag emoji (e.g. 🇫🇷) to a LibreTranslate language code (e.g. "fr").
- * Returns `null` if the emoji is not a valid two-letter regional-indicator flag
- * or the country has no unambiguous primary language in the map.
+ * Converts a flag emoji (e.g. 🇫🇷) to a LibreTranslate language code (e.g. "fr"). Returns `null` if the emoji is not a valid two-letter regional-indicator flag or the country has no unambiguous primary language in the map.
  */
 export function flagEmojiToLangCode(emoji: string): string | null {
 	const codePoints = [...emoji].map((c) => c.codePointAt(0) ?? 0);

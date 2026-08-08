@@ -51,8 +51,7 @@ export class InfractionService {
 	}
 
 	/**
-	 * Returns all infractions that have an `endDate` in the past and are not yet marked as ended.
-	 * Used by the periodic expiry check.
+	 * Returns all infractions that have an `endDate` in the past and are not yet marked as ended. Used by the periodic expiry check.
 	 */
 	public async getExpiredInfractions(): Promise<Infraction[]> {
 		const now = new Date();
@@ -133,8 +132,7 @@ export class InfractionService {
 	}
 
 	/**
-	 * Fetches all expired infractions and processes each one (e.g., removing bans).
-	 * Called on a recurring interval from the client.
+	 * Fetches all expired infractions and processes each one (e.g., removing bans). Called on a recurring interval from the client.
 	 * @param client - The bot client, used to perform guild/member actions like removing bans.
 	 */
 	public async checkExpiredInfractions(client: ShiveronClient): Promise<void> {

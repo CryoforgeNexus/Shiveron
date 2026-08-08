@@ -17,8 +17,7 @@ import { MS_PER_DAY, MS_PER_HOUR, MS_PER_MINUTE, MS_PER_MONTH, MS_PER_YEAR } fro
 
 /**
  * Parses a human-readable time string (e.g., `"30min"`, `"2h"`, `"7d"`, `"1m"`, `"1y"`) into milliseconds.
- * @param timeString - A string consisting of a positive integer followed by a unit suffix:
- *   `min` (minutes), `h` (hours), `d` (days), `m` (months ~30d), `y` (years ~360d).
+ * @param timeString - A string consisting of a positive integer followed by a unit suffix:   `min` (minutes), `h` (hours), `d` (days), `m` (months ~30d), `y` (years ~360d).
  * @returns The equivalent duration in milliseconds.
  * @throws If the string is malformed, the number is ≤ 0, or the unit is unrecognized.
  */

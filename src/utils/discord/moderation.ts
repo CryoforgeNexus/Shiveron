@@ -8,10 +8,7 @@ export enum ModerationAction {
 }
 
 /**
- * Validates that a moderation action is permissible, checking the target's existence,
- * that the author is not targeting themselves, that the target is not an admin,
- * and that the author's highest role is above the target's.
- * Replies to the interaction with an appropriate error message on failure.
+ * Validates that a moderation action is permissible, checking the target's existence, that the author is not targeting themselves, that the target is not an admin, and that the author's highest role is above the target's. Replies to the interaction with an appropriate error message on failure.
  * @param interaction - The slash command interaction, used to send error replies.
  * @param target - The GuildMember being targeted by the action, or `null` if not found.
  * @param author - The GuildMember who issued the command.
@@ -40,8 +37,7 @@ export async function validateAuthor(
 }
 
 /**
- * Validates that the target member exists (i.e., was found in the guild).
- * Replies to the interaction with an error message if the target is `null`.
+ * Validates that the target member exists (i.e., was found in the guild). Replies to the interaction with an error message if the target is `null`.
  * @param interaction - The slash command interaction, used to send the error reply.
  * @param target - The GuildMember to validate, or `null` if not found.
  * @returns `true` if the target exists, `false` otherwise.

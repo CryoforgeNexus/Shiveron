@@ -52,8 +52,7 @@ export class ShiveronLogger {
 	}
 
 	/**
-	 * Appends a formatted message to the appropriate log file(s).
-	 * DEBUG messages are only written to `debug.log`; all others go to both `standard.log` and `debug.log`.
+	 * Appends a formatted message to the appropriate log file(s). DEBUG messages are only written to `debug.log`; all others go to both `standard.log` and `debug.log`.
 	 * @param level - The log level used to decide which files to write to.
 	 * @param formattedMessage - The already-formatted log line to write.
 	 */
