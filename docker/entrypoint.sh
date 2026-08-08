@@ -1,8 +1,8 @@
 #!/bin/sh
-echo "Waiting for LibreTranslate to be ready..."
-until wget -qO- "${LIBRETRANSLATE_URL}/languages" 2>/dev/null | grep -q '"code"'; do
-    echo "LibreTranslate not ready yet, retrying in 15s..."
-    sleep 15
-done
-echo "LibreTranslate is ready. Starting bot..."
-exec node dist/bot.js
+set -e
+
+# The logs directory is a bind mount, so its ownership comes from the host and shadows whatever the image set. Docker creates a missing host directory as root, which the unprivileged node user cannot write to. Fixing it here covers every host state; doing it in the Dockerfile does not.
+mkdir -p /usr/src/app/logs
+chown -R node:node /usr/src/app/logs
+
+exec su-exec node node dist/bot.js
