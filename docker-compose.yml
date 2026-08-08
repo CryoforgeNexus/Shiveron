@@ -8,6 +8,8 @@ services:
         depends_on:
             shiveron_db:
                 condition: service_healthy
+            shiveron_libretranslate:
+                condition: service_healthy
         environment:
             # Discord
             DISCORD_TOKEN_FILE: /run/secrets/discord_token
@@ -41,8 +43,29 @@ services:
         environment:
             LT_API_KEYS: 'false'
             PYTHONUNBUFFERED: '1'
+            # The bot is the only client, so the web UI is dead weight.
+            LT_DISABLE_WEB_UI: 'true'
+            # Model updates on every boot delay startup for no benefit; update deliberately instead.
+            LT_UPDATE_MODELS: 'false'
+            # Translation is CPU-bound. Left unset, CTranslate2 oversubscribes the host and every request gets slower under concurrency. Size this to the cores the host can spare.
+            LT_THREADS: ${LT_THREADS:-4}
+            # Restricts which language models are loaded, cutting memory use and startup time. Empty means every language, which is the safe default. Set it to a comma-separated list (e.g. "en,fr,de") only if the guilds served never need the others.
+            LT_LOAD_ONLY: ${LT_LOAD_ONLY:-}
         volumes:
             - libretranslate_models:/home/libretranslate/.local
+        healthcheck:
+            test:
+                [
+                    'CMD',
+                    'python',
+                    '-c',
+                    'import urllib.request; urllib.request.urlopen("http://localhost:5000/languages")',
+                ]
+            interval: 10s
+            timeout: 10s
+            retries: 30
+            # The first boot downloads the language models, which takes several minutes.
+            start_period: 300s
         networks:
             - shiveron-net
 
