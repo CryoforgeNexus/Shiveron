@@ -270,7 +270,7 @@ export default class SetupCommand extends BaseCommand {
 			}
 
 			if (interaction.values[0] != 'exit') {
-				this.refreshSetup(client, interaction, t, commandCaller);
+				await this.refreshSetup(client, interaction, commandCaller);
 			} else {
 				interaction.editReply({ content: t('command.setup.result.success_exit') });
 			}
@@ -1092,17 +1092,20 @@ export default class SetupCommand extends BaseCommand {
 
 	/**
 	 * Sends a fresh setup message to the channel after a configuration step completes, re-attaching the collector so the user can continue configuring other features.
+	 *
+	 * The translation function is re-bound from the stored settings rather than inherited from the caller. The language picker is itself one of the configuration steps, so the locale captured when `/setup` was invoked is stale by the time the menu is redrawn, and reusing it would render the refreshed menu in the previous language.
 	 * @param client - The bot client instance.
 	 * @param interaction - The select menu interaction whose channel the new message is sent to.
-	 * @param t - Translation function for localized UI text.
 	 * @param commandCaller - The GuildMember who initiated setup; passed to the new collector.
 	 */
 	private async refreshSetup(
 		client: ShiveronClient,
 		interaction: StringSelectMenuInteraction,
-		t: (path: string, vars?: Record<string, any>) => string,
 		commandCaller: GuildMember,
 	): Promise<void> {
+		const guildSettings = await client.guildSettingsService.createOrGetGuildSettings(interaction.guildId!);
+		const t = client.i18n.getTranslator(guildSettings.lang);
+
 		const { embed: setupEmbed, row: setupRow } = await this.createSetupMessage(client, interaction, t);
 		const channel = interaction.channel;
 
