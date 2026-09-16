@@ -37,6 +37,15 @@ export class I18N {
 	}
 
 	/**
+	 * Binds a locale to a translation function. Callers that resolve a guild's locale themselves use this instead of repeating the closure, and re-binding after the locale changes is what keeps an already-rendered flow from continuing in the previous language.
+	 * @param locale - The locale code to bind (e.g., `"fr"`). Unknown locales fall back to `en` at resolution time.
+	 * @returns A translation function that resolves key paths against the bound locale.
+	 */
+	public getTranslator(locale: string): Translator {
+		return (keyPath: string, vars: Record<string, any> = {}) => this.translate(locale, keyPath, vars);
+	}
+
+	/**
 	 * Traverses a nested object using a dot-separated path string and returns the value at that path.
 	 * @param bundle - The root translation object to traverse.
 	 * @param keyPath - A dot-separated key path (e.g., `"command.ban.success"`).
