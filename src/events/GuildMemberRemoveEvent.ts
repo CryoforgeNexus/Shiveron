@@ -15,8 +15,9 @@ export default class GuildMemberRemoveEvent extends BaseEvent<'guildMemberRemove
 	 */
 	public async execute(client: ShiveronClient, member: GuildMember | PartialGuildMember): Promise<void> {
 		try {
+			// Resolved against the API rather than the ban cache. The client does not subscribe to GuildModeration, so no GuildBanRemove event ever evicts a cached entry, and a member who was banned and later unbanned stays cached as banned for the lifetime of the process. A cached read then reports a kicked or departing member as banned and posts the ban message in place of the leave message.
 			const isBanned = await member.guild.bans
-				.fetch(member.id)
+				.fetch({ user: member.id, force: true })
 				.then(() => true)
 				.catch(() => false);
 			const currentGuild = await client.guildSettingsService.createOrGetGuildSettings(member.guild.id);
