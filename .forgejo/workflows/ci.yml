@@ -87,11 +87,16 @@ jobs:
         name: Docker Image Build
         runs-on: ubuntu-latest
         steps:
-            - name: Install git-lfs
-              run: apt-get update && apt-get install -y git-lfs
+            # The runner image ships git-lfs and the docker client in the same step because both are missing from it. Without the client the job aborts with "docker: command not found" before reaching the build.
+            - name: Install git-lfs and the Docker client
+              run: apt-get update && apt-get install -y git-lfs docker.io
             - uses: https://github.com/actions/checkout@v4
               with:
                   lfs: true
+
+            # Fails early with a readable message when the runner has not exposed a daemon socket to the job, which is otherwise reported as an opaque build error.
+            - name: Verify the Docker daemon is reachable
+              run: docker info
 
             # Builds the image only; the published image is produced by the release workflow, not here.
             - name: Build image
