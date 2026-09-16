@@ -289,7 +289,7 @@ async function processNameChange(
 		return;
 	}
 
-	channel.setName(answer.content).catch(() => {
+	await channel.setName(answer.content).catch(() => {
 		client.logger.warn("Couldn't change the name of a voice channel");
 	});
 
@@ -298,7 +298,7 @@ async function processNameChange(
 	});
 
 	if (await createSetAsDefaultQuestion(t, setAsDefaultQuestion, channelOwnerId)) {
-		client.voiceService.updateTempVoice({
+		await client.voiceService.updateTempVoice({
 			guildId: channel.guild.id,
 			ownerId: channelOwnerId,
 			channelName: answer.content,
@@ -330,14 +330,14 @@ async function processPermissionToggle(
 	const everyone = channel.guild.roles.everyone;
 	const enabled = channel.permissionsFor(everyone).has(toggle.permission);
 
-	channel.permissionOverwrites.edit(everyone, toggle.buildOverwrite(!enabled));
+	await channel.permissionOverwrites.edit(everyone, toggle.buildOverwrite(!enabled));
 
 	const setAsDefaultQuestion = await interaction.editReply({
 		content: t(`temp_voice.process.${toggle.localeKey}.success_${enabled ? 'disable' : 'enable'}`, { channel }),
 	});
 
 	if (await createSetAsDefaultQuestion(t, setAsDefaultQuestion, channelOwnerId)) {
-		client.voiceService.updateTempVoice({
+		await client.voiceService.updateTempVoice({
 			guildId: channel.guild.id,
 			ownerId: channelOwnerId,
 			...toggle.buildUpdate(!enabled),
@@ -370,7 +370,7 @@ async function processPrivateChannel(
 		!everyonePermissions.has(PermissionFlagsBits.ViewChannel) &&
 		!everyonePermissions.has(PermissionFlagsBits.Connect);
 
-	channel.permissionOverwrites.edit(everyone, {
+	await channel.permissionOverwrites.edit(everyone, {
 		ViewChannel: isPrivateChannel,
 		Connect: isPrivateChannel,
 	});
@@ -385,7 +385,7 @@ async function processPrivateChannel(
 	});
 
 	if (await createSetAsDefaultQuestion(t, setAsDefaultQuestion, channelOwnerId)) {
-		client.voiceService.updateTempVoice({
+		await client.voiceService.updateTempVoice({
 			guildId: channel.guild.id,
 			ownerId: channelOwnerId,
 			privateChannel: !isPrivateChannel,
@@ -502,16 +502,16 @@ async function processACL(
 		const isOnTargetList = existingEntry && existingEntry.hasAccess == !blacklist;
 
 		if (isOnTargetList) {
-			channel.permissionOverwrites.delete(userId);
+			await channel.permissionOverwrites.delete(userId);
 			response += t(`temp_voice.process.${listKey}.success_remove`, { user });
-			client.voiceService.deleteVoiceACL(channel.guild.id, channelOwnerId, user.id);
+			await client.voiceService.deleteVoiceACL(channel.guild.id, channelOwnerId, user.id);
 		} else {
-			channel.permissionOverwrites.edit(user, {
+			await channel.permissionOverwrites.edit(user, {
 				ViewChannel: !blacklist,
 				Connect: !blacklist,
 			});
 			response += t(`temp_voice.process.${listKey}.success_add`, { user });
-			client.voiceService.createOrUpdateVoiceACL(channel.guild.id, channelOwnerId, user.id, !blacklist);
+			await client.voiceService.createOrUpdateVoiceACL(channel.guild.id, channelOwnerId, user.id, !blacklist);
 		}
 	}
 
