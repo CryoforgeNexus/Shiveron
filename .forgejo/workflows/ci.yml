@@ -6,6 +6,10 @@ on:
     pull_request:
         branches: ['dev', 'main']
 
+# Every job here only reads the checked-out tree. Declaring the token scope explicitly keeps a compromised action or dependency from writing to the repository, and stops the default token from widening as new jobs are added.
+permissions:
+    contents: read
+
 jobs:
     lint:
         name: Lint & Format
@@ -30,6 +34,32 @@ jobs:
 
             - name: Run ESLint
               run: npm run lint
+
+    audit:
+        name: Dependency Audit
+        runs-on: ubuntu-latest
+        steps:
+            - name: Install git-lfs
+              run: apt-get update && apt-get install -y git-lfs
+            - uses: https://github.com/actions/checkout@v4
+              with:
+                  lfs: true
+
+            - uses: https://github.com/actions/setup-node@v4
+              with:
+                  node-version: '22'
+                  cache: 'npm'
+
+            - name: Install dependencies
+              run: npm ci
+
+            # Verifies every installed tarball against its registry signature, which detects a package republished or tampered with after the lockfile was written.
+            - name: Verify registry signatures
+              run: npm audit signatures
+
+            # Gated at high so an unreachable moderate advisory in a transitive pin cannot block a release. Moderate findings are reviewed manually rather than enforced here.
+            - name: Audit dependencies
+              run: npm audit --audit-level=high
 
     build:
         name: TypeScript Build
