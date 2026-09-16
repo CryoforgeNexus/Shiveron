@@ -31,20 +31,20 @@
 	"type": "module",
 	"dependencies": {
 		"async-lock": "^1.4.1",
-		"discord.js": "^14.25.1",
-		"pg": "^8.21.0",
-		"sequelize": "^6.37.7"
+		"discord.js": "^14.27.0",
+		"pg": "^8.23.0",
+		"sequelize": "^6.37.8"
 	},
 	"devDependencies": {
 		"@eslint/js": "^10.0.1",
 		"@types/async-lock": "^1.4.2",
-		"@types/node": "^25.9.0",
-		"@typescript-eslint/eslint-plugin": "^8.59.4",
-		"@typescript-eslint/parser": "^8.59.4",
-		"eslint": "^10.4.0",
+		"@types/node": "^25.9.7",
+		"@typescript-eslint/eslint-plugin": "^8.70.0",
+		"@typescript-eslint/parser": "^8.70.0",
+		"eslint": "^10.10.0",
 		"eslint-config-prettier": "10.1.8",
-		"jiti": "^2.6.1",
-		"prettier": "3.8.3",
+		"jiti": "^2.7.0",
+		"prettier": "3.9.7",
 		"typescript": "^6.0.3"
 	}
 }
