@@ -40,7 +40,6 @@ export default class InterationCreateEvent extends BaseEvent<'interactionCreate'
 						interaction.guildId,
 					);
 					lang = currentGuild.lang;
-					console.log(lang);
 				}
 			} catch (error) {
 				client.logger.error(
@@ -48,10 +47,10 @@ export default class InterationCreateEvent extends BaseEvent<'interactionCreate'
 				);
 			}
 
-			const t = (path: string, vars: Record<string, any> = {}) => client.i18n.translate(lang, path, vars);
+			const t = client.i18n.getTranslator(lang);
 
 			try {
-				command.execute(client, interaction, t);
+				await command.execute(client, interaction, t);
 				if (interaction.guild) {
 					client.logger.debug(`Executed command ${command.data.name} in guild ${interaction.guild.id}`);
 				}
