@@ -1,0 +1,19 @@
+# Optional override that moves translation inference onto an NVIDIA GPU.
+#
+# Argos Translate runs on CTranslate2, which is an order of magnitude faster on CUDA than on CPU for these models. The language model volume is shared with the CPU stack: the model files themselves are device-agnostic, so switching between the two does not trigger a re-download.
+#
+# Requires the NVIDIA Container Toolkit on the host. Apply it alongside the base file:
+# docker compose -f docker-compose.yml -f docker-compose.gpu.yml up -d --build
+services:
+    shiveron_libretranslate:
+        image: libretranslate/libretranslate:latest-cuda
+        environment:
+            # Argos reads this to select the inference device. The CUDA image sets it already; naming it here keeps the override self-describing and guards against a base-image change.
+            ARGOS_DEVICE_TYPE: cuda
+        deploy:
+            resources:
+                reservations:
+                    devices:
+                        - driver: nvidia
+                          count: 1
+                          capabilities: [gpu]

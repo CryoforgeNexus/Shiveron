@@ -169,6 +169,18 @@ The first startup downloads the LibreTranslate language models and takes several
 
 Set `NODE_ENV=development` and `DISCORD_GUILD_ID` in `.env` while iterating, so slash commands register against a single test guild instead of globally.
 
+#### GPU inference
+
+Translation is the slowest operation the bot performs, and it is CPU-bound by default. `docker-compose.gpu.yml` is an optional override that swaps LibreTranslate for its CUDA image and reserves an NVIDIA device:
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.gpu.yml up -d --build
+```
+
+It requires the NVIDIA Container Toolkit on the host; without it the container fails to start rather than falling back to CPU. The language model volume is shared with the CPU stack, so switching between the two does not re-download anything.
+
+Two settings in `.env` matter on either device. `LT_THREADS` should match the cores the host can spare, though gains flatten past roughly six because the models are small. `LT_LOAD_ONLY` restricts which language models load, which cuts both startup time and resident memory; `en` must stay in the list because Argos pivots every other pair through English, translating French to Spanish as two inference passes rather than one.
+
 ### Linting
 
 CI runs both checks on every pull request and blocks the merge if either fails. Run them locally first:
