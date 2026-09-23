@@ -179,7 +179,11 @@ docker compose -f docker-compose.yml -f docker-compose.gpu.yml up -d --build
 
 It requires the NVIDIA Container Toolkit on the host; without it the container fails to start rather than falling back to CPU. The language model volume is shared with the CPU stack, so switching between the two does not re-download anything.
 
-Two settings in `.env` matter on either device. `LT_THREADS` should match the cores the host can spare, though gains flatten past roughly six because the models are small. `LT_LOAD_ONLY` restricts which language models load, which cuts both startup time and resident memory; `en` must stay in the list because Argos pivots every other pair through English, translating French to Spanish as two inference passes rather than one.
+`LT_THREADS` is easy to misread. It sets the WSGI server's thread count, so it governs how many requests are served at once and has no effect on how fast any one translation runs. Inference threading is Argos's own concern and is left at its defaults.
+
+Single-request latency is bounded by the host CPU, and measurements on a twelve-core machine put the ceiling near three translations per second however the threading is arranged. Under concurrent load the per-request 95th percentile reaches several seconds, which is what `TRANSLATION_REQUEST_TIMEOUT_MS` is sized against. Moving inference to a GPU is the only change that lifts that ceiling.
+
+`LT_LOAD_ONLY` restricts which language models load, which cuts both startup time and resident memory; `en` must stay in the list because Argos pivots every other pair through English, translating French to Spanish as two inference passes rather than one.
 
 ### Linting
 
