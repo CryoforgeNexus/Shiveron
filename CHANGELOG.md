@@ -7,7 +7,9 @@ All notable changes to Shiveron are documented here. Versions follow [Semantic V
 ### Added
 - LibreTranslate reachability is checked at startup and reported in the logs, instead of only failing at the first translation
 - LibreTranslate timings are logged at `debug` level, so slow translations can be attributed to the backend rather than guessed at
-- `LT_THREADS` and `LT_LOAD_ONLY` in `.env.example`, to tune LibreTranslate's CPU use and the set of loaded language models. `linux_setup_and_run.sh` prompts for both
+- `LT_THREADS` and `LT_LOAD_ONLY` in `.env.example`, to tune how many requests LibreTranslate serves at once and which language models it loads. `linux_setup_and_run.sh` prompts for both
+- `docker-compose.gpu.yml`, an optional override that runs LibreTranslate on an NVIDIA GPU. Translation on the CPU tops out at roughly three translations per second, and the GPU stack is the only thing that lifts that ceiling. Requires the NVIDIA Container Toolkit on the host
+- Release workflow: pushing a `v*` tag publishes a Forgejo release whose notes are the matching CHANGELOG section, so the published notes are the ones written by hand
 
 ### Changed
 - Guild settings are cached in memory after the first read, removing a database round trip from every message and voice state change
@@ -28,6 +30,7 @@ All notable changes to Shiveron are documented here. Versions follow [Semantic V
 ### Fixed
 - Auto-translation reply not being awaited, so a failed reply surfaced as an unhandled rejection instead of being logged
 - Setup panel throwing instead of stopping cleanly when the join, leave or ban message prompt timed out
+- LibreTranslate requests had no timeout, so an unresponsive backend held a message handler open for minutes rather than failing and logging
 
 ## [v1.2.0] — Message translation
 
