@@ -19,6 +19,8 @@ secrets/
 
 # headroom MCP local tooling state (per-machine context-compression marker)
 .claude/.headroom_wrap_marker.json
+.claude/.headroom_wrap_owners.json
+.claude/.headroom_wrap_settings.lock
 
 # Machine-local files
 *.local.*
