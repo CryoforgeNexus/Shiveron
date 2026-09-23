@@ -70,6 +70,20 @@ To invite the bot to a server:
 > [!NOTE]
 > The first startup takes a few minutes, because the translation language models are downloaded before the bot can start. The bot container stays idle until LibreTranslate reports itself healthy, so it logs nothing during that time. Watch `docker compose ps` for the LibreTranslate container to turn healthy, then follow the bot with `docker compose logs -f`.
 
+### 3. Optional: speed up translation
+
+Translation is the heaviest thing Shiveron does, and by default it runs on the CPU. On a twelve-core machine that works out to roughly three translations per second, which is ample for a quiet server and tight for a busy one. Two options help.
+
+**Load fewer languages.** Set `LT_LOAD_ONLY` in `.env` to the languages the server actually uses, for example `en,fr,de`. This cuts both the first-startup download and the memory the translation container holds afterwards. Keep `en` in the list: every other pair is translated through English, so removing it breaks the rest.
+
+**Use an NVIDIA GPU.** If the host has one, `docker-compose.gpu.yml` moves translation onto it:
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.gpu.yml up -d --build
+```
+
+This needs the [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html) installed on the host first. Without it the translation container fails to start rather than quietly falling back to the CPU. The downloaded language models are shared between the two setups, so switching does not download them again.
+
 ## Contributing
 
 Shiveron is built to be extended: commands and events are self-contained files, so adding a feature or stripping one out is a matter of adding or deleting a file.
