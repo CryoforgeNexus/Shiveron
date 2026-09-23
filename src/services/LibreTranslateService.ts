@@ -1,6 +1,10 @@
 import { ShiveronLogger } from '../core/ShiveronLogger.js';
 import { getConfig } from '../utils/config.js';
-import { TRANSLATION_CACHE_MAX_ENTRIES } from '../utils/constants.js';
+import {
+	TRANSLATION_CACHE_MAX_ENTRIES,
+	TRANSLATION_PROBE_TIMEOUT_MS,
+	TRANSLATION_REQUEST_TIMEOUT_MS,
+} from '../utils/constants.js';
 
 /**
  * A bounded least-recently-used cache.
@@ -81,6 +85,38 @@ export class LibreTranslateService {
 	}
 
 	/**
+	 * Issues a request to the LibreTranslate instance and parses the JSON response, aborting once the deadline elapses.
+	 *
+	 * The deadline is the point of the helper. Undici's own timeouts are measured in minutes, so a wedged backend would otherwise hold a message handler or an interaction open long past the point where the caller could still act on a result.
+	 *
+	 * @param path - Endpoint path, appended to the configured base URL.
+	 * @param timeoutMs - Milliseconds to wait before the request is aborted.
+	 * @param body - Payload to send as JSON. Omitting it issues a GET.
+	 * @returns The parsed response body.
+	 * @throws When the request is aborted, the connection fails, or the instance answers with a non-2xx status.
+	 */
+	private async request<T>(path: string, timeoutMs: number, body?: unknown): Promise<T> {
+		const response = await fetch(`${this.baseUrl}${path}`, {
+			signal: AbortSignal.timeout(timeoutMs),
+			...(body === undefined
+				? {}
+				: {
+						method: 'POST',
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify(body),
+					}),
+		});
+
+		if (!response.ok) {
+			const message = `LibreTranslate ${path} error ${response.status}: ${await response.text()}`;
+			this.logger.error(message);
+			throw new Error(message);
+		}
+
+		return response.json() as Promise<T>;
+	}
+
+	/**
 	 * Translates a string into the target language.
 	 *
 	 * Pass `sourceLang = "auto"` (the default) to let LibreTranslate detect the source language automatically. The detection result is then included in the returned object so callers can show it alongside the translation or use the confidence score to decide whether to surface the result.
@@ -103,22 +139,15 @@ export class LibreTranslateService {
 		}
 
 		const startedAt = Date.now();
-		const response = await fetch(`${this.baseUrl}/translate`, {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ q: text, source: sourceLang, target: targetLang, format: 'text' }),
-		});
-
-		if (!response.ok) {
-			const message = `LibreTranslate /translate error ${response.status}: ${await response.text()}`;
-			this.logger.error(message);
-			throw new Error(message);
-		}
-
-		const data = (await response.json()) as {
+		const data = await this.request<{
 			translatedText: string;
 			detectedLanguage?: { language: string; confidence: number };
-		};
+		}>('/translate', TRANSLATION_REQUEST_TIMEOUT_MS, {
+			q: text,
+			source: sourceLang,
+			target: targetLang,
+			format: 'text',
+		});
 
 		const result = {
 			translatedText: data.translatedText,
@@ -144,19 +173,11 @@ export class LibreTranslateService {
 		}
 
 		const startedAt = Date.now();
-		const response = await fetch(`${this.baseUrl}/detect`, {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ q: text }),
-		});
-
-		if (!response.ok) {
-			const message = `LibreTranslate /detect error ${response.status}: ${await response.text()}`;
-			this.logger.error(message);
-			throw new Error(message);
-		}
-
-		const data = (await response.json()) as { language: string; confidence: number }[];
+		const data = await this.request<{ language: string; confidence: number }[]>(
+			'/detect',
+			TRANSLATION_REQUEST_TIMEOUT_MS,
+			{ q: text },
+		);
 		const sorted = data.sort((a, b) => b.confidence - a.confidence);
 
 		this.detectionCache.set(text, sorted);
@@ -168,23 +189,19 @@ export class LibreTranslateService {
 	 * Returns the list of languages supported by this LibreTranslate instance. Useful for populating the language picker in the setup command.
 	 */
 	public async getLanguages(): Promise<{ code: string; name: string }[]> {
-		const response = await fetch(`${this.baseUrl}/languages`);
-
-		if (!response.ok) {
-			const message = `LibreTranslate /languages error ${response.status}: ${await response.text()}`;
-			this.logger.error(message);
-			throw new Error(message);
-		}
-
-		return response.json() as Promise<{ code: string; name: string }[]>;
+		return this.request<{ code: string; name: string }[]>('/languages', TRANSLATION_REQUEST_TIMEOUT_MS);
 	}
 
 	/**
 	 * Returns `true` if the LibreTranslate service is reachable, `false` otherwise.
+	 *
+	 * Deliberately bypasses `request`, which logs a failure as an error. An unreachable backend is reported by the caller as a warning, and is held to a shorter deadline than a translation because the endpoint serves a static list.
 	 */
 	public async isAvailable(): Promise<boolean> {
 		try {
-			const response = await fetch(`${this.baseUrl}/languages`);
+			const response = await fetch(`${this.baseUrl}/languages`, {
+				signal: AbortSignal.timeout(TRANSLATION_PROBE_TIMEOUT_MS),
+			});
 			return response.ok;
 		} catch {
 			return false;

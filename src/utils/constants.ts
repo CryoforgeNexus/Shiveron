@@ -34,3 +34,10 @@ export const BOT_PRESENCE_TEXT = 'cryoforgenexus.com';
 // Translation cache
 // Entries held per cache before the least recently used one is evicted.
 export const TRANSLATION_CACHE_MAX_ENTRIES = 500;
+
+// Translation request timeouts
+// Abort a translation or detection request that has not answered in this long. Inference is slow enough on CPU, and slower again when the pair pivots through English, that this is deliberately generous: it exists to fail a wedged backend, not to bound a merely slow one.
+export const TRANSLATION_REQUEST_TIMEOUT_MS = 10_000;
+
+// The availability probe reads a static list and answers immediately when the backend is healthy, so it is held to a much shorter deadline.
+export const TRANSLATION_PROBE_TIMEOUT_MS = 5_000;
