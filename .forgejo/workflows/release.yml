@@ -1,0 +1,65 @@
+name: Release
+
+# Releases are cut by pushing a version tag. The tag is expected to sit on a commit that adds the matching section to CHANGELOG.md, so the notes published here are the ones written by hand rather than a list assembled from commit subjects.
+on:
+    push:
+        tags: ['v*']
+
+# Creating a release writes to the repository, so this workflow needs more than the read-only default the CI workflow declares. Nothing here pushes commits or moves refs.
+permissions:
+    contents: write
+
+jobs:
+    release:
+        name: Publish Release
+        runs-on: ubuntu-latest
+        steps:
+            # Neither tool is present in the runner image, and both are needed to build and post the request body.
+            - name: Install curl and jq
+              run: apt-get update && apt-get install -y curl jq
+
+            # LFS content is not smudged: only CHANGELOG.md is read, and the release carries no binary assets.
+            - uses: https://github.com/actions/checkout@v4
+              with:
+                  lfs: false
+
+            # Every value from the workflow context is passed through the environment rather than interpolated into the script, so a tag name cannot inject shell.
+            - name: Create the release
+              env:
+                  TAG: ${{ github.ref_name }}
+                  SERVER_URL: ${{ github.server_url }}
+                  REPOSITORY: ${{ github.repository }}
+                  FORGEJO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: |
+                  set -eu
+
+                  title="$(./.forgejo/scripts/extract-changelog.sh "$TAG" title)"
+                  body="$(./.forgejo/scripts/extract-changelog.sh "$TAG" body)"
+
+                  # A SemVer pre-release tag carries a hyphenated suffix, e.g. v1.3.0-rc1. Marking it keeps it out of the "latest release" slot.
+                  case "$TAG" in
+                    *-*) prerelease=true ;;
+                    *) prerelease=false ;;
+                  esac
+
+                  jq -n \
+                    --arg tag "$TAG" \
+                    --arg name "$title" \
+                    --arg body "$body" \
+                    --argjson prerelease "$prerelease" \
+                    '{tag_name: $tag, name: $name, body: $body, draft: false, prerelease: $prerelease}' \
+                    > release.json
+
+                  status="$(curl -sS -o response.json -w '%{http_code}' \
+                    -X POST "${SERVER_URL}/api/v1/repos/${REPOSITORY}/releases" \
+                    -H "Authorization: token ${FORGEJO_TOKEN}" \
+                    -H 'Content-Type: application/json' \
+                    -d @release.json)"
+
+                  if [ "$status" != "201" ]; then
+                    echo "::error::Forgejo refused the release (HTTP $status):"
+                    cat response.json
+                    exit 1
+                  fi
+
+                  echo "Published $title as a $( [ "$prerelease" = true ] && echo 'pre-release' || echo 'release' )."
