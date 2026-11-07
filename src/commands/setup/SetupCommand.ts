@@ -19,6 +19,8 @@ import {
 	ChannelSelectMenuBuilder,
 	ChannelType,
 	ChannelSelectMenuInteraction,
+	MentionableSelectMenuBuilder,
+	MentionableSelectMenuInteraction,
 	MessageComponentInteraction,
 	type Interaction,
 } from 'discord.js';
@@ -143,11 +145,7 @@ export default class SetupCommand extends BaseCommand {
 				: t('command.setup.embed.fields.current_config.disabled'),
 		});
 		currentConfigText.value += t('command.setup.embed.fields.current_config.auto_translate_blacklist');
-		if (guildSettings.autoTranslateBlacklist && guildSettings.autoTranslateBlacklist.length > 0) {
-			currentConfigText.value += guildSettings.autoTranslateBlacklist.map((id) => `<#${id}>`).join(', ');
-		} else {
-			currentConfigText.value += t('command.setup.embed.fields.current_config.auto_translate_blacklist_none');
-		}
+		currentConfigText.value += this.formatAutoTranslateBlacklist(guildSettings, t);
 		currentConfigText.value += t('command.setup.embed.fields.current_config.boost_message');
 		if (guildSettings.boostChannelId) {
 			currentConfigText.value += t('command.setup.embed.fields.current_config.boost_message_enabled', {
@@ -944,7 +942,7 @@ export default class SetupCommand extends BaseCommand {
 	}
 
 	/**
-	 * Enables auto-translation for the guild and prompts for a channel blacklist.
+	 * Enables auto-translation for the guild and prompts for the blacklist: channels first, then users and roles. Nothing is saved unless both prompts are answered, so a timeout leaves the previous blacklist intact.
 	 * @param client - The bot client instance.
 	 * @param interaction - The component interaction that triggered this configuration step.
 	 * @param t - Translation function for localized UI text.
@@ -957,18 +955,15 @@ export default class SetupCommand extends BaseCommand {
 		commandCaller: GuildMember,
 	): Promise<void> {
 		const currentSettings = await client.guildSettingsService.createOrGetGuildSettings(interaction.guildId!);
-		const currentBlacklist = currentSettings.autoTranslateBlacklist ?? [];
-		const currentBlacklistText =
-			currentBlacklist.length > 0
-				? currentBlacklist.map((id) => `<#${id}>`).join(', ')
-				: t('command.setup.embed.fields.current_config.auto_translate_blacklist_none');
+		const currentBlacklistText = this.formatAutoTranslateBlacklist(currentSettings, t);
 
 		const channelSelection = new ChannelSelectMenuBuilder()
 			.setCustomId('auto_translate_blacklist')
 			.setMinValues(0)
 			.setMaxValues(25)
 			.setPlaceholder(t('misc.channel_selection'))
-			.addChannelTypes(ChannelType.GuildText);
+			.addChannelTypes(ChannelType.GuildText)
+			.setDefaultChannels(currentSettings.autoTranslateBlacklist ?? []);
 
 		const channelSelectionRow = new ActionRowBuilder<ChannelSelectMenuBuilder>().addComponents(channelSelection);
 
@@ -985,34 +980,93 @@ export default class SetupCommand extends BaseCommand {
 
 		if (!channelSelected) {
 			blacklistMessage.reply({ content: t('misc.interaction_expired', { seconds: 60 }) });
-		} else {
-			await channelSelected.deferReply();
-
-			const selectedChannels = channelSelected.values;
-			const updatedSettings = await client.guildSettingsService.updateGuildSettings({
-				guildId: interaction.guildId!,
-				autoTranslate: true,
-				autoTranslateBlacklist: selectedChannels.length > 0 ? selectedChannels : null,
-			});
-
-			if (updatedSettings) {
-				if (selectedChannels.length > 0) {
-					channelSelected.editReply({
-						content: t('command.setup.result.success_enable_auto_translate_blacklist', {
-							count: selectedChannels.length,
-						}),
-					});
-				} else {
-					channelSelected.editReply({ content: t('command.setup.result.success_enable_auto_translate') });
-				}
-			} else {
-				channelSelected.editReply({
-					content: t('command.setup.result.error_generic', {
-						feature: t('command.setup.feature.auto_translate'),
-					}),
-				});
-			}
+			return;
 		}
+
+		await channelSelected.deferReply();
+
+		const mentionableSelection = new MentionableSelectMenuBuilder()
+			.setCustomId('auto_translate_member_blacklist')
+			.setMinValues(0)
+			.setMaxValues(25)
+			.setPlaceholder(t('misc.mentionable_selection'))
+			.addDefaultUsers(currentSettings.autoTranslateUserBlacklist ?? [])
+			.addDefaultRoles(currentSettings.autoTranslateRoleBlacklist ?? []);
+
+		const mentionableSelectionRow = new ActionRowBuilder<MentionableSelectMenuBuilder>().addComponents(
+			mentionableSelection,
+		);
+
+		const memberBlacklistMessage = await channelSelected.editReply({
+			content: t('command.setup.prompt.auto_translate_member_blacklist'),
+			components: [mentionableSelectionRow],
+		});
+
+		const mentionableSelected = (await awaitAuthorizedComponentInteraction(
+			memberBlacklistMessage,
+			commandCaller.id,
+			ComponentType.MentionableSelect,
+		)) as MentionableSelectMenuInteraction;
+
+		if (!mentionableSelected) {
+			memberBlacklistMessage.reply({ content: t('misc.interaction_expired', { seconds: 60 }) });
+			return;
+		}
+
+		await mentionableSelected.deferReply();
+
+		const selectedChannels = channelSelected.values;
+		const selectedUsers = [...mentionableSelected.users.keys()];
+		const selectedRoles = [...mentionableSelected.roles.keys()];
+		const updatedSettings = await client.guildSettingsService.updateGuildSettings({
+			guildId: interaction.guildId!,
+			autoTranslate: true,
+			autoTranslateBlacklist: selectedChannels.length > 0 ? selectedChannels : null,
+			autoTranslateUserBlacklist: selectedUsers.length > 0 ? selectedUsers : null,
+			autoTranslateRoleBlacklist: selectedRoles.length > 0 ? selectedRoles : null,
+		});
+
+		if (!updatedSettings) {
+			mentionableSelected.editReply({
+				content: t('command.setup.result.error_generic', {
+					feature: t('command.setup.feature.auto_translate'),
+				}),
+			});
+			return;
+		}
+
+		if (selectedChannels.length + selectedUsers.length + selectedRoles.length > 0) {
+			mentionableSelected.editReply({
+				content: t('command.setup.result.success_enable_auto_translate_blacklist', {
+					channels: selectedChannels.length,
+					users: selectedUsers.length,
+					roles: selectedRoles.length,
+				}),
+			});
+		} else {
+			mentionableSelected.editReply({ content: t('command.setup.result.success_enable_auto_translate') });
+		}
+	}
+
+	/**
+	 * Lists every blacklisted channel, user and role as mentions, for the setup embed and the blacklist prompt.
+	 * @param guildSettings - The guild settings holding the three auto-translation blacklists.
+	 * @param t - Translation function for localized UI text.
+	 * @returns The mentions joined by commas, or the localized "none" label when all three lists are empty.
+	 */
+	private formatAutoTranslateBlacklist(
+		guildSettings: GuildSettings,
+		t: (path: string, vars?: Record<string, any>) => string,
+	): string {
+		const mentions = [
+			...(guildSettings.autoTranslateBlacklist ?? []).map((id) => `<#${id}>`),
+			...(guildSettings.autoTranslateUserBlacklist ?? []).map((id) => `<@${id}>`),
+			...(guildSettings.autoTranslateRoleBlacklist ?? []).map((id) => `<@&${id}>`),
+		];
+
+		return mentions.length > 0
+			? mentions.join(', ')
+			: t('command.setup.embed.fields.current_config.auto_translate_blacklist_none');
 	}
 
 	/**

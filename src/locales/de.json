@@ -117,7 +117,8 @@
                 "auto_ban_count": "Gib die Anzahl der Verwarnungen ein, die für einen automatischen Bann erforderlich sind.",
                 "feature_action": "Möchtest du ${feature} konfigurieren oder deaktivieren?",
                 "select_language": "Wähle die Sprache aus, die du verwenden möchtest.",
-                "auto_translate_blacklist": "Wähle Kanäle aus, die von der automatischen Übersetzung ausgeschlossen werden sollen. Leer lassen, um die Blacklist zu leeren.\nAktuell auf der Blacklist: ${current}",
+                "auto_translate_blacklist": "Wähle Kanäle aus, die von der automatischen Übersetzung ausgeschlossen werden sollen. Leer lassen, um die Kanal-Blacklist zu leeren.\nAktuell auf der Blacklist: ${current}",
+                "auto_translate_member_blacklist": "Wähle Nutzer und Rollen aus, deren Nachrichten nie automatisch übersetzt werden. Aktuelle Einträge sind vorausgewählt; wähle sie ab, um sie zu entfernen. Flaggen-Reaktionen und /translate funktionieren bei ihren Nachrichten weiterhin.",
                 "enter_message_without_member_count": "Gib die ${action}-Nachricht ein. Nutze:\n- ${user} für den Mitgliedsnamen\n- ${server} für den Servernamen"
             },
             "button": {
@@ -134,7 +135,7 @@
                 "success_enable_max_warnings": "Die Anzahl der Verwarnungen für den automatischen Bann wurde auf ${amount} gesetzt.",
                 "success_enable_lang": "Die Sprache wurde auf ${language} eingestellt.",
                 "success_enable_auto_translate": "Die automatische Übersetzung wurde aktiviert.",
-                "success_enable_auto_translate_blacklist": "Die automatische Übersetzung wurde mit ${count} Kanal/Kanälen auf der Blacklist aktiviert.",
+                "success_enable_auto_translate_blacklist": "Die automatische Übersetzung wurde aktiviert. Auf der Blacklist: ${channels} Kanal/Kanäle, ${users} Nutzer, ${roles} Rolle(n).",
                 "success_exit": "Setup-Panel geschlossen.",
                 "error_generic": "Beim Aktualisieren von ${feature} ist ein Fehler aufgetreten. Bitte versuche es erneut."
             },
@@ -269,6 +270,7 @@
         "interaction_forbidden": "${user}, du hast keine Berechtigung, diese Buttons zu verwenden.",
         "generic_selection": "Wähle eine Aktion",
         "channel_selection": "Wähle einen Kanal",
-        "user_selection": "Wähle Nutzer aus"
+        "user_selection": "Wähle Nutzer aus",
+        "mentionable_selection": "Wähle Nutzer oder Rollen aus"
     }
 }

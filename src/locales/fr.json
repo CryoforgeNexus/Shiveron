@@ -117,7 +117,8 @@
                 "auto_ban_count": "Entrez le nombre d'avertissements requis pour déclencher un bannissement auto.",
                 "feature_action": "Voulez-vous configurer ${feature} ou désactiver la fonction ?",
                 "select_language": "Sélectionnez la langue que vous souhaitez utiliser.",
-                "auto_translate_blacklist": "Sélectionnez les salons à exclure de la traduction automatique. Laissez vide pour effacer la liste noire.\nActuellement en liste noire : ${current}",
+                "auto_translate_blacklist": "Sélectionnez les salons à exclure de la traduction automatique. Laissez vide pour effacer la liste noire des salons.\nActuellement en liste noire : ${current}",
+                "auto_translate_member_blacklist": "Sélectionnez les utilisateurs et les rôles dont les messages ne sont jamais traduits automatiquement. Les entrées actuelles sont présélectionnées ; désélectionnez-les pour les retirer. Les réactions drapeau et /translate fonctionnent toujours sur leurs messages.",
                 "enter_message_without_member_count": "Entrez le message de ${action}. Utilisez :\n- ${user} pour le nom du membre\n- ${server} pour le nom du serveur"
             },
             "button": {
@@ -134,7 +135,7 @@
                 "success_enable_max_warnings": "Le seuil de bannissement automatique a été fixé à ${amount} avertissements",
                 "success_enable_lang": "La langue a été définie sur ${language}",
                 "success_enable_auto_translate": "La traduction automatique a été activée.",
-                "success_enable_auto_translate_blacklist": "La traduction automatique a été activée avec ${count} salon(s) en liste noire.",
+                "success_enable_auto_translate_blacklist": "La traduction automatique a été activée. En liste noire : ${channels} salon(s), ${users} utilisateur(s), ${roles} rôle(s).",
                 "success_exit": "Panneau de configuration fermé.",
                 "error_generic": "Une erreur est survenue lors de la mise à jour de ${feature}. Veuillez réessayer."
             },
@@ -269,6 +270,7 @@
         "interaction_forbidden": "${user}, vous n'êtes pas autorisé à utiliser ces boutons.",
         "generic_selection": "Choisissez une action",
         "channel_selection": "Choisissez un salon",
-        "user_selection": "Sélectionnez des utilisateurs"
+        "user_selection": "Sélectionnez des utilisateurs",
+        "mentionable_selection": "Sélectionnez des utilisateurs ou des rôles"
     }
 }

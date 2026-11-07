@@ -117,7 +117,8 @@
                 "auto_ban_count": "Enter the number of warnings required to trigger an auto-ban.",
                 "feature_action": "Do you want to configure ${feature} or turn it off?",
                 "select_language": "Select the language you want to use.",
-                "auto_translate_blacklist": "Select channels to exclude from auto-translation. Leave empty to clear the blacklist.\nCurrently blacklisted: ${current}",
+                "auto_translate_blacklist": "Select channels to exclude from auto-translation. Leave empty to clear the channel blacklist.\nCurrently blacklisted: ${current}",
+                "auto_translate_member_blacklist": "Select users and roles whose messages are never auto-translated. Current entries are preselected; deselect them to remove them. Flag reactions and /translate still work on their messages.",
                 "enter_message_without_member_count": "Enter the ${action} message. Use:\n- ${user} for the member's name\n- ${server} for the server name"
             },
             "button": {
@@ -134,7 +135,7 @@
                 "success_enable_max_warnings": "The number of warnings that needs to be reached for the auto-ban feature to trigger has been set to ${amount}",
                 "success_enable_lang": "The language has been set to ${language}",
                 "success_enable_auto_translate": "Auto-translation has been enabled.",
-                "success_enable_auto_translate_blacklist": "Auto-translation has been enabled with ${count} blacklisted channel(s).",
+                "success_enable_auto_translate_blacklist": "Auto-translation has been enabled. Blacklisted: ${channels} channel(s), ${users} user(s), ${roles} role(s).",
                 "success_exit": "Setup panel closed.",
                 "error_generic": "An error occurred while updating ${feature}. Please try again."
             },
@@ -269,6 +270,7 @@
         "interaction_forbidden": "${user}, you are not allowed to use these buttons.",
         "generic_selection": "Choose an action",
         "channel_selection": "Choose a channel",
-        "user_selection": "Select users"
+        "user_selection": "Select users",
+        "mentionable_selection": "Select users or roles"
     }
 }
