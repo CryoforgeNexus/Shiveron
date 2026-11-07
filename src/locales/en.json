@@ -259,7 +259,9 @@
         "embed": {
             "title": "Translation to ${lang} ${flag}",
             "footer": "Translated from ${flag} ${sourceLang}"
-        }
+        },
+        "unsupported_language": "Translation into ${lang} isn't available on this server.",
+        "dm_fallback": "${user} I couldn't DM you, so here it is. This message disappears in ${seconds}s."
     },
     "error": {
         "command_failed": "There was an error while executing this command!",

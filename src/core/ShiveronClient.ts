@@ -1,4 +1,4 @@
-import { Client, GatewayIntentBits, Collection, REST, Routes, ActivityType } from 'discord.js';
+import { Client, GatewayIntentBits, Collection, REST, Routes, ActivityType, Partials } from 'discord.js';
 import fs from 'fs';
 import path from 'path';
 import { pathToFileURL } from 'url';
@@ -38,6 +38,8 @@ export class ShiveronClient extends Client {
 				GatewayIntentBits.MessageContent,
 				GatewayIntentBits.GuildMessageReactions,
 			],
+			// Without these, reactions on messages sent before the bot started never fire messageReactionAdd. Handlers that opt in fetch the partial before use.
+			partials: [Partials.Message, Partials.Reaction, Partials.User],
 		});
 
 		this.commands = new Collection();

@@ -259,7 +259,9 @@
         "embed": {
             "title": "Übersetzung nach ${lang} ${flag}",
             "footer": "Übersetzt aus ${flag} ${sourceLang}"
-        }
+        },
+        "unsupported_language": "Eine Übersetzung nach ${lang} ist auf diesem Server nicht verfügbar.",
+        "dm_fallback": "${user} Ich konnte dir keine Direktnachricht schicken, deshalb kommt sie hier. Diese Nachricht verschwindet in ${seconds} s."
     },
     "error": {
         "command_failed": "Beim Ausführen dieses Befehls ist ein Fehler aufgetreten!",

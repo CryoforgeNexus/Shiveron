@@ -259,7 +259,9 @@
         "embed": {
             "title": "Traduction vers ${lang} ${flag}",
             "footer": "Traduit depuis ${flag} ${sourceLang}"
-        }
+        },
+        "unsupported_language": "La traduction vers ${lang} n'est pas disponible sur ce serveur.",
+        "dm_fallback": "${user} Je n'ai pas pu t'envoyer de message privé, la voici donc. Ce message disparaît dans ${seconds} s."
     },
     "error": {
         "command_failed": "Une erreur est survenue lors de l'exécution de cette commande !",

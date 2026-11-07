@@ -27,6 +27,10 @@ export const TRANSLATION_MIN_SCORE_GAP = 0.2;
 
 // Messages shorter than this, once mentions, links, code and emoji are stripped, are not worth detecting.
 export const TRANSLATION_MIN_MESSAGE_LENGTH = 12;
+
+// How long a flag-reaction translation stays in the channel when the reactor's DMs are closed.
+export const FLAG_TRANSLATION_FALLBACK_TTL_MS = MS_PER_MINUTE;
+
 // Presence
 // Shown under the bot's name in the member list. Not translated: presence is set once per process, not per guild, so there is no locale to bind it to.
 export const BOT_PRESENCE_TEXT = 'cryoforgenexus.com';
