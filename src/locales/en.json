@@ -258,7 +258,7 @@
     "translation": {
         "embed": {
             "title": "Translation to ${lang} ${flag}",
-            "footer": "Translated from ${flag} ${sourceLang} (${confidence}%)"
+            "footer": "Translated from ${flag} ${sourceLang}"
         }
     },
     "error": {

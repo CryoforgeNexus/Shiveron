@@ -1,13 +1,12 @@
 import {
 	AutocompleteInteraction,
 	ChatInputCommandInteraction,
-	EmbedBuilder,
 	InteractionContextType,
 	SlashCommandBuilder,
 } from 'discord.js';
 import { BaseCommand } from '../../core/BaseCommand.js';
 import { ShiveronClient } from '../../core/ShiveronClient.js';
-import { langCodeToFlagEmoji } from '../../utils/flagLanguageMap.js';
+import { buildTranslationEmbed } from '../../utils/discord/translationEmbed.js';
 
 export default class TranslateCommand extends BaseCommand {
 	public data = new SlashCommandBuilder()
@@ -62,25 +61,15 @@ export default class TranslateCommand extends BaseCommand {
 
 		await interaction.deferReply();
 
-		const { translatedText, detectedLanguage } = await client.libreTranslate.translate(text, targetLang);
+		const { translatedText, sourceLanguage } = await client.libreTranslate.translate(text, targetLang);
 
-		const targetFlag = langCodeToFlagEmoji(targetLang);
-		const embed = new EmbedBuilder()
-			.setAuthor({ name: interaction.user.displayName, iconURL: interaction.user.displayAvatarURL() })
-			.setTitle(t('translation.embed.title', { lang: targetLang.toUpperCase(), flag: targetFlag }))
-			.setDescription(`\`\`\`${translatedText}\`\`\``)
-			.setColor('#46d8ef');
+		const embed = buildTranslationEmbed(t, {
+			translatedText,
+			targetLanguage: targetLang,
+			sourceLanguage,
+			requester: interaction.user,
+		});
 
-		if (detectedLanguage) {
-			embed.setFooter({
-				text: t('translation.embed.footer', {
-					flag: langCodeToFlagEmoji(detectedLanguage.language),
-					sourceLang: detectedLanguage.language.toUpperCase(),
-					confidence: detectedLanguage.confidence,
-				}),
-			});
-		}
-
-		await interaction.editReply({ embeds: [embed] });
+		await interaction.editReply({ embeds: [embed], allowedMentions: { parse: [] } });
 	}
 }

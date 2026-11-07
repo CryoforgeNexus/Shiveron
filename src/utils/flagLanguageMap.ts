@@ -216,6 +216,7 @@ const LANG_TO_COUNTRY: Readonly<Record<string, string>> = {
 	uz: 'uz',
 	vi: 'vn',
 	zh: 'cn',
+	'zh-Hans': 'cn',
 };
 
 /** Converts an ISO 3166-1 alpha-2 country code (e.g. "fr") to its flag emoji (e.g. 🇫🇷). */
