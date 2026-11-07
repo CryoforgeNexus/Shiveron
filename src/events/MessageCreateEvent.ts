@@ -10,7 +10,7 @@ export default class MessageCreateEvent extends BaseEvent<'messageCreate'> {
 	public once = false;
 
 	/**
-	 * Checks the language of every non-bot guild message. If it differs from the guild's configured language and LibreTranslate is confident enough, replies with a translation embed.
+	 * Checks the language of every non-bot guild message outside the blacklisted channels, users and roles. If it differs from the guild's configured language and LibreTranslate is confident enough, replies with a translation embed.
 	 * @param client - The bot client instance.
 	 * @param message - The newly created message.
 	 */
@@ -19,11 +19,13 @@ export default class MessageCreateEvent extends BaseEvent<'messageCreate'> {
 			try {
 				const currentGuild = await client.guildSettingsService.createOrGetGuildSettings(message.guildId);
 
-				if (
-					currentGuild.autoTranslate &&
-					currentGuild.lang &&
-					!currentGuild.autoTranslateBlacklist?.includes(message.channelId)
-				) {
+				const blacklistedRoles = currentGuild.autoTranslateRoleBlacklist ?? [];
+				const isBlacklisted =
+					currentGuild.autoTranslateBlacklist?.includes(message.channelId) ||
+					currentGuild.autoTranslateUserBlacklist?.includes(message.author.id) ||
+					message.member?.roles.cache.hasAny(...blacklistedRoles);
+
+				if (currentGuild.autoTranslate && currentGuild.lang && !isBlacklisted) {
 					const [detectedLanguage] = await client.libreTranslate.detect(message.content);
 
 					if (
