@@ -12,6 +12,8 @@ export interface GuildSettingsAttributes {
 	lang: string;
 	autoTranslate: boolean;
 	autoTranslateBlacklist: string[] | null;
+	autoTranslateUserBlacklist: string[] | null;
+	autoTranslateRoleBlacklist: string[] | null;
 	boostChannelId: string | null;
 	boostMessage: string | null;
 	banChannelId: string | null;
@@ -30,6 +32,8 @@ export interface GuildSettingsCreationAttributes extends Optional<
 	| 'lang'
 	| 'autoTranslate'
 	| 'autoTranslateBlacklist'
+	| 'autoTranslateUserBlacklist'
+	| 'autoTranslateRoleBlacklist'
 	| 'boostChannelId'
 	| 'boostMessage'
 	| 'banChannelId'
@@ -51,6 +55,8 @@ export class GuildSettings
 	declare lang: string;
 	declare autoTranslate: boolean;
 	declare autoTranslateBlacklist: string[] | null;
+	declare autoTranslateUserBlacklist: string[] | null;
+	declare autoTranslateRoleBlacklist: string[] | null;
 	declare boostChannelId: string | null;
 	declare boostMessage: string | null;
 	declare banChannelId: string | null;
@@ -109,6 +115,14 @@ export class GuildSettings
 					defaultValue: false,
 				},
 				autoTranslateBlacklist: {
+					type: DataTypes.ARRAY(DataTypes.STRING),
+					allowNull: true,
+				},
+				autoTranslateUserBlacklist: {
+					type: DataTypes.ARRAY(DataTypes.STRING),
+					allowNull: true,
+				},
+				autoTranslateRoleBlacklist: {
 					type: DataTypes.ARRAY(DataTypes.STRING),
 					allowNull: true,
 				},

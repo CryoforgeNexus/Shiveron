@@ -13,6 +13,8 @@ export interface CreateGuildSettingsData {
 	lang?: string;
 	autoTranslate?: boolean;
 	autoTranslateBlacklist?: string[] | null;
+	autoTranslateUserBlacklist?: string[] | null;
+	autoTranslateRoleBlacklist?: string[] | null;
 	boostChannelId?: string | null;
 	boostMessage?: string | null;
 	banChannelId?: string | null;
@@ -61,6 +63,8 @@ export class GuildSettingsService {
 					lang: 'en',
 					autoTranslate: false,
 					autoTranslateBlacklist: null,
+					autoTranslateUserBlacklist: null,
+					autoTranslateRoleBlacklist: null,
 					boostChannelId: null,
 					boostMessage: null,
 					banChannelId: null,
